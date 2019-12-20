@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>826</width>
+    <height>266</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>웹감지툴</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>100</y>
+      <width>151</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>감시시작</string>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="url">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>50</y>
+      <width>681</width>
+      <height>41</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>URL 입력 상자</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>110</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>옵션선택</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_10m">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>150</y>
+      <width>108</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>10분</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_5m">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>150</y>
+      <width>108</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>5분</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_1m">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>150</y>
+      <width>108</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1분</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_print">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>190</y>
+      <width>551</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="toolTip">
+     <string>툴팁테스트</string>
+    </property>
+    <property name="text">
+     <string>결과창</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_30s">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>150</y>
+      <width>108</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>30초</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_5s">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>150</y>
+      <width>108</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>5초</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>100</y>
+      <width>151</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>감시중지</string>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>rb_10m</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setCycle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>165</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>105</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>startChk()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>509</x>
+     <y>146</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>559</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb_5m</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setCycle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>175</x>
+     <y>153</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>120</x>
+     <y>186</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb_1m</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setCycle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>256</x>
+     <y>160</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>210</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb_30s</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setCycle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>156</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>263</x>
+     <y>184</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rb_5s</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>setCycle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>405</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>366</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>stopChk()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>728</x>
+     <y>145</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>185</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setCycle()</slot>
+  <slot>startChk()</slot>
+  <slot>stopChk()</slot>
+ </slots>
+</ui>
