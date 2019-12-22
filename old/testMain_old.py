@@ -17,6 +17,9 @@ from PyQt5 import uic
 ## 메인 클래스
 from testMainUI import Ui_MainWindow
 
+# 참고..
+# pyinstaller --onefile -p _dllfiles testMain_old.py
+
 
 class Main(QMainWindow, Ui_MainWindow):
 # class Main(QMainWindow):
