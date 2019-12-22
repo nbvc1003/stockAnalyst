@@ -66,6 +66,16 @@ class Main(QMainWindow):
         self.lineEdit_2.setText('AAPL')
         self.lineEdit_1.setFocus()
 
+        # connect 방식으로 함수를 연결할때 인자를 사용할수 없기때문에
+        # 중간에 람다함수를 사용하여 인자를 전달하도록 작성한다.
+        # 이때 clicked 함수에서 리턴되는 값이 2개 이므로 값2개를 받고 그중 button객체만 전달하면 된다.
+        # 필요하다면 state변수도 전달 한다.
+        self.btn_start.clicked.connect(lambda state, button = self.btn_start : self.btnTest(state, button))
+
+    def btnTest(self,state, btn):
+        print(state, type(state))
+        print(btn)
+        print('btn test')
 
 ## UI slots
     def aStart(self):
