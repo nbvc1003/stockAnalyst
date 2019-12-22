@@ -15,7 +15,7 @@ from PyQt5 import uic
 # MainUI = "../UI/testMainUI.ui"
 
 ## 메인 클래스
-from old.testMainUI import Ui_MainWindow
+from testMainUI import Ui_MainWindow
 
 
 class Main(QMainWindow, Ui_MainWindow):
