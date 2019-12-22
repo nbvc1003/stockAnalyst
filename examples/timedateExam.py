@@ -1,5 +1,5 @@
 import sys, datetime
-from testPackage.timedateUI import Ui_Form
+from examples.timedateUI import Ui_Form
 from PyQt5.QtWidgets import QWidget, QApplication
 
 # pyuic5 -x 파일명.ui -o 출력명.py

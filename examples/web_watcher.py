@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import QTimer
 from bs4 import BeautifulSoup as bs
 import urllib.request as req, sys, time
-from web_watcherUI import Ui_MainWindow
+from examples.web_watcherUI import Ui_MainWindow
 
 # QT코어 QMainWindow와 QT 디자이너 에서 생성된 Ui_MainWindow 를 상속 받는다.
 class Example(QMainWindow, Ui_MainWindow):

@@ -1,24 +1,30 @@
 from datetime import date, timedelta
 
 # from PyQt5.QtCore import QDate
-import pandas as pd
 from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
 from numpy import polyval
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from testMainUI import Ui_MainWindow
 # from scipy import stats
-import random, sys, time
+import random, sys
 # import statsmodels.formula.api as sm
+from PyQt5 import uic
 
-
+# MainUI = "../UI/testMainUI.ui"
 
 ## 메인 클래스
+from old.testMainUI import Ui_MainWindow
+
+
 class Main(QMainWindow, Ui_MainWindow):
+# class Main(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        # uic.loadUi(MainUI,self)
+
         self.setupUi(self)
         self.iniUI()
         self.mainState = 0
@@ -194,5 +200,5 @@ class PlotCanvas(FigureCanvas):
 
 app = QApplication([])
 ex = Main()
-
+# ex.show()
 sys.exit(app.exec_())

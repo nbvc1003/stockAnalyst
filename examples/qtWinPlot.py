@@ -2,9 +2,9 @@ import random, sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from testPackage.qtWinPltUI import Ui_MainWindow
+from qtWinPltUI import Ui_MainWindow
 
-
+# plt 차트와 qt를 함께 사용하는 예제
 class Main(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
