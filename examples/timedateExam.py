@@ -1,6 +1,11 @@
 import sys, datetime
 from examples.timedateUI import Ui_Form
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QWidget, QApplication, QHBoxLayout
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+
+
 
 # pyuic5 -x 파일명.ui -o 출력명.py
 
@@ -14,6 +19,29 @@ class Main(QWidget, Ui_Form):
         self.btnTime.clicked.connect(self.time)
         self.btnDate.clicked.connect(self.date)
         self.btnAll.clicked.connect(self.all)
+
+        self.TestPlot()
+
+    def TestPlot(self):
+        N = 5
+        value = (20, 30, 30, 35, 25)
+        ind = np.arange(N)
+        width = 0.35
+
+        fig = plt.Figure()
+        ax = fig.add_subplot(111)
+        ax.bar(ind, value, width)
+        ax.set_xticklabels(['G1','G2','G3','G4','G5'])
+
+        canvas = FigureCanvas(fig)
+        canvas.draw()
+
+        lay = QHBoxLayout()
+        self.setLayout(lay)
+        lay.addWidget(canvas)
+        canvas.show()
+
+
 
     def now(self):
         now = datetime.datetime.now()

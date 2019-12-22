@@ -1,10 +1,11 @@
 from datetime import date, timedelta
-
 # from PyQt5.QtCore import QDate
 from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
-from numpy import polyval
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy
+# import numpy as np
+# from numpy import polyval
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QHBoxLayout
+# import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 # from scipy import stats
@@ -25,8 +26,9 @@ class Main(QMainWindow):
         # self.setupUi(self)
         self.iniUI()
         self.mainState = 0
-
         self.setUI()
+
+
 
     def iniUI(self):
         self.m = PlotCanvas(self, width=5, height=4)
@@ -40,17 +42,6 @@ class Main(QMainWindow):
         print('상관계수 :', r_value)
         print('유의수준 :', p_value)
 
-    # 그래프 출력부
-    def MPlot(plt, tsd , csd, slope, intersecept):
-        # print(tsd , csd, slope, intersecept)
-        ry = polyval([slope, intersecept], tsd)
-        plt.plot(tsd, csd, 'k.')
-        plt.plot(tsd, ry, 'r')
-        # plt.title('{}/{}'.format(targetStockCode, compStockCode))
-        # plt.xlabel(targetStockCode)
-        # plt.ylabel(compStockCode)
-        # plt.legend(['price', 'polyval'])
-        # plt.show()
 
 #===============================================================================
 
