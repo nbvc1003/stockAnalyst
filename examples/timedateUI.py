@@ -11,7 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(599, 311)
+        # Form.resize(599, 311)
+        Form.resize(799, 511)
         self.btnNow = QtWidgets.QPushButton(Form)
         self.btnNow.setGeometry(QtCore.QRect(390, 40, 181, 111))
         self.btnNow.setObjectName("btnNow")
