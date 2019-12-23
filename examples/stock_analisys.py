@@ -63,10 +63,10 @@ while True:
     except RemoteDataError as ede:
         # print(type(ede))
         print('애러발생 {}'.format(ede))
-        break;
+        break
     except Exception as err:
         print(type(err))
-        break;
+        break
 
     tsd = targetStock_df['Close']
     csd = compStock_df['Close']

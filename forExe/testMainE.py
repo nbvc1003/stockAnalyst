@@ -1,8 +1,8 @@
 from datetime import date, timedelta
 from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
-# import numpy as np
-# from numpy import polyval
+import numpy as np
+from numpy import polyval
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QHBoxLayout
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -241,7 +241,7 @@ class Main(QMainWindow, Ui_MainWindow):
         print(csd)
 
         corr = tsd.corr(csd)
-        print('corr:', corr)
+        print('corr:', corr, type(corr))
 
         title = '{} / {}'.format(targetStockCode, compStockCode)
         self.textEdit_info.append("종목: " + title)
@@ -249,8 +249,9 @@ class Main(QMainWindow, Ui_MainWindow):
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))
         self.textEdit_info.append('상관관계 : {}'.format(corr))
 
-        self.m.plot(list(tsd), list(csd), title=title, markup='k.', xlabel=targetStockCode, ylabel=compStockCode,
-                    start=start, end=end)
+        self.m.plot2(tsd, csd)
+        self.m.plot1(list(tsd), list(csd), title=title, markup='k.', xlabel=targetStockCode, ylabel=compStockCode,
+                     start=start, end=end)
 
         # self.m.plot(tsd, ry, markup='r')
 
@@ -268,7 +269,7 @@ class PlotCanvas(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.ax = self.figure.add_subplot(111)
 
-    def plot(self, *data, markup=None, title='', xlabel='', ylabel='', start=None, end=None):
+    def plot1(self, *data, markup=None, title='', xlabel='', ylabel='', start=None, end=None):
 
         if len(data) == 0:
             print('data len is 0 !!!!!!!')
@@ -277,15 +278,69 @@ class PlotCanvas(FigureCanvas):
             markup = 'k.'
 
         self.ax.plot(data[0], data[1], markup)
+
         titleplus = title + ' ({} ~ {})'.format(start, end)
         self.ax.set_title(titleplus)
         self.ax.set_xlabel(xlabel)
         self.ax.set_ylabel(ylabel)
         self.draw()
 
+    def plot2(self, xdata, ydata):
+
+        data = np.array([xdata.values, ydata.values])
+        # print('data[0]',data[0])
+
+        # data = np.array()
+        # print('data',data)
+        # data[0] = xdata.values
+        # data[1] = ydata.values
+        # print(data)
+        data = data.T
+        m, n = data.shape
+        # print(m, n)
+        A = np.array([data[:, 0], np.ones(m)]).T
+        b = data[:, 1]
+        # print("A :", A)
+        Q, R = self.qr_householder(A)
+        b_hat = Q.T.dot(b)
+
+        R_upper = R[:n, :]
+        b_upper = b_hat[:n]
+
+        # print(R_upper, b_upper)
+
+        x = np.linalg.solve(R_upper, b_upper)
+        slope, intercept = x
+
+        print(slope, intercept)
+
+        ry = polyval([slope, intercept], xdata)
+        self.ax.plot(xdata, ry, 'r-')
+        self.draw()
+
     def plotClear(self):
         self.ax.cla()
         self.draw()
+
+    def qr_householder(self, A):
+        m, n = A.shape
+        Q = np.eye(m)  # Orthogonal transform so far
+        R = A.copy()  # Transformed matrix so far
+
+        for j in range(n):
+            # Find H = I - beta*u*u' to put zeros below R[j,j]
+            x = R[j:, j]
+            normx = np.linalg.norm(x)
+            rho = -np.sign(x[0])
+            u1 = x[0] - rho * normx
+            u = x / u1
+            u[0] = 1
+            beta = -rho * u1 / normx
+
+            R[j:, :] = R[j:, :] - beta * np.outer(u, u).dot(R[j:, :])
+            Q[:, j:] = Q[:, j:] - beta * Q[:, j:].dot(np.outer(u, u))
+
+        return Q, R
 
 
 app = QApplication([])
