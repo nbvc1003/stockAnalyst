@@ -15,28 +15,25 @@ import pandas as pd
 from PyQt5 import uic
 import urllib.request as req
 
-
-
-
-# from testMainUI import Ui_MainWindow
+from testMainUI import Ui_MainWindow
 MainUI = "../UI/testMainUI.ui"
 
+
 ## 메인 클래스
-# class Main(QMainWindow, Ui_MainWindow): 
-class Main(QMainWindow): #  ui파일로 로드 하는 방식
+class Main(QMainWindow, Ui_MainWindow):
+# class Main(QMainWindow):  # ui파일로 로드 하는 방식
     def __init__(self):
         super().__init__()
 
-        uic.loadUi(MainUI,self)
-        # self.setupUi(self)
+        # uic.loadUi(MainUI, self)
+        self.setupUi(self)
         self.iniUI()
         self.mainState = 0
         self.setUI()
 
-
     def iniUI(self):
         self.m = PlotCanvas(self)
-        self.m.move(30, 330) # 초기 위치 설정
+        self.m.move(30, 330)  # 초기 위치 설정
 
         self.rb_1m.clicked.connect(self.rbtn_setPeriod)
         self.rb_3m.clicked.connect(self.rbtn_setPeriod)
@@ -44,18 +41,16 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         self.rb_1y.clicked.connect(self.rbtn_setPeriod)
         self.rb_2y.clicked.connect(self.rbtn_setPeriod)
 
-
         # self.show()
 
-
-#===============================================================================
+    # ===============================================================================
 
     def setUI(self):
 
         print(date.today())
         self.dateEdit.setDate(date.today() + timedelta(days=-30))
-        #time2 + timedelta(days=-3)
-        self.dateEdit_2.setDate(date.today() )
+        # time2 + timedelta(days=-3)
+        self.dateEdit_2.setDate(date.today())
 
         self.btn_start.setEnabled(True)
         self.lineEdit_1.setText('AMD')
@@ -68,12 +63,12 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # 필요하다면 state변수도 전달 한다.
         # self.btn_start.clicked.connect(lambda state, button = self.btn_start : self.btnTest(state, button))
 
-    def btnTest(self,state, btn):
+    def btnTest(self, state, btn):
         print(state, type(state))
         print(btn)
         print('btn test')
 
-## UI slots
+    ## UI slots
     ## start 버튼
     def aStart(self):
 
@@ -84,7 +79,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
         # print(self.lineEdit_1.text())
         # print(self.lineEdit_2.text())
-        
+
         # 소문자 대문자로
         input1 = self.lineEdit_1.text()
         input2 = self.lineEdit_2.text()
@@ -103,7 +98,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
         self.lbl_prierd.setText(str((end - start).days) + " day")
 
-        if (input1 ,input2 != None) and (len(input1) > 0 and len(input2) > 0):
+        if (input1, input2 != None) and (len(input1) > 0 and len(input2) > 0):
             self.inputData(input1, input2, start, end)
         else:
             print('입력코드값 오류')
@@ -125,27 +120,26 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             self.dateEdit.setDate(date.today() + timedelta(days=-30))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_3m.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*3))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 3))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_6m.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*6))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 6))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_1y.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*12))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 12))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_2y.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*24))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 24))
             self.dateEdit_2.setDate(date.today())
 
-
-    def inputData(self, targetStockCode, compStockCode, start, end ):
-        print('inputData targetStockCode :', targetStockCode,  compStockCode)
+    def inputData(self, targetStockCode, compStockCode, start, end):
+        print('inputData targetStockCode :', targetStockCode, compStockCode)
 
         # 코드 채크
-        if targetStockCode == None :
+        if targetStockCode == None:
             targetStockCode = 'AMD'
 
-        if compStockCode == None :
+        if compStockCode == None:
             compStockCode = 'AAPL'
 
         # 날짜 채크
@@ -161,7 +155,6 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
         self.textEdit_info.append("========================")
 
-
         try:
             targetStock_df = data.DataReader(targetStockCode, "yahoo", start, end)  # start ~ end 까지
             compStock_df = data.DataReader(compStockCode, "yahoo", start, end)  # start ~ end 까지
@@ -175,7 +168,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             print('애러발생 2{}'.format(err))
             return
 
-        if  targetStock_df is None or compStock_df is None:
+        if targetStock_df is None or compStock_df is None:
             self.textEdit_info.append('오류발생 !!!!!')
             return
         #
@@ -183,12 +176,11 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # print(compStock_df)
         print(targetStock_df.size)
         print(compStock_df.size)
-        
 
         tsd = targetStock_df['Close']
         csd = compStock_df['Close']
 
-        #가져온 데이터의 길이가 다르면
+        # 가져온 데이터의 길이가 다르면
         if tsd.size > csd.size:
             csd = pd.merge(tsd, csd, on='Date', how='outer')
             csd = csd['Close_y']
@@ -196,11 +188,10 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             tsd = pd.merge(csd, tsd, on='Date', how='outer')
             tsd = tsd['Close_y']
 
-        print("2",tsd.size)
-        print("2",csd.size)
+        print("2", tsd.size)
+        print("2", csd.size)
 
-
-        #===================================================================================
+        # ===================================================================================
         ## from scipy import stats 사용할경우
         # slope, intersecept, r_value, p_value, stderr = stats.linregress(tsd, csd)
         # ConsolePrint(slope, intersecept, r_value, p_value)
@@ -208,18 +199,18 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # print(tsd, type(tsd))
         # ry = polyval([slope, intersecept], tsd)
         # print(targetStock_df['Close'])
-        #========================================================================
+        # ========================================================================
 
         # print('tsd',tsd)
         # print('csd',csd)
 
         if len(tsd) < 1:
-            self.textEdit_info.append(targetStockCode +' 종목 정보를 가져오지 못했습니다.')
+            self.textEdit_info.append(targetStockCode + ' 종목 정보를 가져오지 못했습니다.')
             return
         if len(csd) < 1:
-            self.textEdit_info.append(compStockCode +' 종목 정보를 가져오지 못했습니다.')
+            self.textEdit_info.append(compStockCode + ' 종목 정보를 가져오지 못했습니다.')
             return
-        
+
         # 데이터 길이가 다를경우 강제로 사이즈 조절
         if len(tsd) > len(csd):
             tsd = tsd[0:len(csd)]
@@ -246,23 +237,20 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             print('csd isnull')
             csd = csd.fillna(csd.mean())
 
-
         print(tsd)
         print(csd)
 
-
         corr = tsd.corr(csd)
-        print('corr:',corr)
+        print('corr:', corr)
 
-        title = '{} / {}'.format(targetStockCode,compStockCode )
-        self.textEdit_info.append("종목: "+ title)
+        title = '{} / {}'.format(targetStockCode, compStockCode)
+        self.textEdit_info.append("종목: " + title)
 
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))
         self.textEdit_info.append('상관관계 : {}'.format(corr))
 
-
-
-        self.m.plot(list(tsd), list(csd),title=title,  markup='k.',xlabel=targetStockCode,ylabel=compStockCode, start=start, end=end)
+        self.m.plot(list(tsd), list(csd), title=title, markup='k.', xlabel=targetStockCode, ylabel=compStockCode,
+                    start=start, end=end)
 
         # self.m.plot(tsd, ry, markup='r')
 
@@ -280,7 +268,7 @@ class PlotCanvas(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.ax = self.figure.add_subplot(111)
 
-    def plot(self, *data, markup = None, title = '', xlabel='', ylabel='', start=None, end=None):
+    def plot(self, *data, markup=None, title='', xlabel='', ylabel='', start=None, end=None):
 
         if len(data) == 0:
             print('data len is 0 !!!!!!!')

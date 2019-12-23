@@ -18,6 +18,7 @@ class Example(QMainWindow, Ui_MainWindow):
 
     def setCycle(self):
         if self.rb_10m.isChecked():
+            # self.rb_10m.setChecked()
             self.timer.setInterval(10*60*1000)
         elif self.rb_5m.isChecked():
             self.timer.setInterval(5 * 60 * 1000)
