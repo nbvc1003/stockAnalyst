@@ -19,6 +19,7 @@ import urllib.request as req
 
 
 # from testMainUI import Ui_MainWindow
+import modules.tableWidget
 MainUI = "../UI/testMainUI.ui"
 
 ## 메인 클래스
@@ -44,6 +45,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         self.rb_1y.clicked.connect(self.rbtn_setPeriod)
         self.rb_2y.clicked.connect(self.rbtn_setPeriod)
 
+        self.btn_more1.clicked.connect(self.btnMore)
 
         # self.show()
 
@@ -136,6 +138,12 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         elif self.rb_2y.isChecked():
             self.dateEdit.setDate(date.today() + timedelta(days=-30*24))
             self.dateEdit_2.setDate(date.today())
+
+    def btnMore(self):
+
+        self.tw = modules.tableWidget.TableWidget()
+
+        self.tw.show()
 
 
     def inputData(self, targetStockCode, compStockCode, start, end ):
