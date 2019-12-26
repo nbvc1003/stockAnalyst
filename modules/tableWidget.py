@@ -19,18 +19,34 @@ class TableWidget(QWidget):
     def initUI(self):
         self.setWindowTitle('테이블팝업윈도우')
         self.setGeometry(100, 100, 400,800)
+
         self.createKospiTable()
-        self.makeKospiTabke()
+        self.table.cellClicked.connect(self.updateUiCellClick)
+
+        self.makeKospiTable()
 
         self.layout = QVBoxLayout()
 
         tab_layout = QHBoxLayout()
-        for text, slot in ( ("KOSPI", self.btn_tab_kospi), ("NYSE", self.btn_tab_nyse), ("NSDAQ", self.btn_tab_nasdaq)):
-            rbtn = QRadioButton(text)
-            if text == 'KOSPI':
-                rbtn.setChecked(True)
-            tab_layout .addWidget(rbtn)
-            rbtn.clicked.connect(slot)
+        # for text, slot in ( ("KOSPI", self.btn_tab_kospi), ("NYSE", self.btn_tab_nyse), ("NSDAQ", self.btn_tab_nasdaq)):
+        #     rbtn = QRadioButton(text)
+        #     if text == 'KOSPI':
+        #         rbtn.setChecked(True)
+        #     tab_layout .addWidget(rbtn)
+        #     rbtn.clicked.connect(slot)
+        self.rbtn_kospi = QRadioButton("KOSPI")
+        self.rbtn_kospi.clicked.connect(self.btn_tab_kospi)
+        tab_layout.addWidget(self.rbtn_kospi)
+
+        self.rbtn_nyse = QRadioButton("NYSE")
+        self.rbtn_nyse.clicked.connect(self.btn_tab_nyse)
+        tab_layout.addWidget(self.rbtn_nyse)
+
+        self.rbtn_nasdaq = QRadioButton("NSDAQ")
+        self.rbtn_nasdaq.clicked.connect(self.btn_tab_nasdaq)
+        tab_layout.addWidget(self.rbtn_nasdaq)
+        self.rbtn_kospi.setChecked(True)
+
 
         self.layout.addWidget(self.table)
         btn_layout = QHBoxLayout()
@@ -46,13 +62,9 @@ class TableWidget(QWidget):
         # self.show()
 
     def createKospiTable(self):
-
-        self.table.cellClicked.connect(self.updateUiCellClick)
         self.df = pd.read_csv('../forExe/kospi_kosdaq_code.csv', encoding='euc-kr')
-
         # print(df.tail())
         print('1',len(self.df.index))
-
         self.df['종목코드'] = self.df['종목코드'].dropna(axis=0)
         self.df['종목명'] = self.df['종목명'].dropna(axis=0)
         self.df['업종명'] = self.df['업종명'].dropna(axis=0)
@@ -68,7 +80,7 @@ class TableWidget(QWidget):
         self.table.setHorizontalHeaderLabels(('이름','코드'))
         self.table.clearContents()
 
-    def makeKospiTabke(self):
+    def makeKospiTable(self):
         self.table.clearContents()
         for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
             # print(df.columns.values.)
@@ -85,23 +97,53 @@ class TableWidget(QWidget):
                                    self.df.iloc[r,list(self.df.columns.values).index('종목코드')]))
 
     def createNyseTable(self):
-        pass
+        self.df = pd.read_csv('../forExe/nyse_symbol.csv', encoding='utf-8')
+        print(self.df.index)
+        print(self.df.columns.values)
+        # print(self.df['Symbol'])
+        self.df['Symbol'] = self.df['Symbol'].dropna(axis=0)
+        self.df['Name'] = self.df['Name'].dropna(axis=0)
+         # df['Symbol']
+
+
+        print(self.df.index)
+        self.maxPage = len(self.df.index) // self.pageperMax
+        self.table.setRowCount(self.pageperMax)
+        self.table.setColumnCount(2)
+        self.table.setHorizontalHeaderLabels(('이름','심볼'))
+        self.table.clearContents()
+
     def makeNyseTable(self):
-        pass
+        self.table.clearContents()
+        for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
+            if r >= len(self.df.index):
+                break
+            _index = r - (self.cPage * self.pageperMax)
+            print(_index, r)
+            print(self.df.iloc[r,list(self.df.columns.values).index('Symbol')])
+            self.table.setItem(_index, 0, QTableWidgetItem(
+                                   self.df.iloc[r,list(self.df.columns.values).index('Name')]))
+            self.table.setItem(_index, 1, QTableWidgetItem(
+                                   self.df.iloc[r,list(self.df.columns.values).index('Symbol')]))
+        
     def createNasdaqTable(self):
         pass
     def makeNasdaqTable(self):
         pass
-
     def btn_tab_kospi(self):
         self.cPage = 0
-        self.makeKospiTabke()
+        self.createKospiTable()
+        self.makeKospiTable()
         pass
     def btn_tab_nyse(self):
+        self.cPage = 0
+        self.createNyseTable()
+        self.makeNyseTable()
         pass
     def btn_tab_nasdaq(self):
-        pass
-
+        self.cPage = 0
+        self.createNasdaqTable()
+        self.makeNasdaqTable()
 
     def btn_page_pre(self):
         self.table.scrollToTop()
@@ -109,16 +151,29 @@ class TableWidget(QWidget):
             self.cPage -= 1
         print('page :' , self.cPage)
         self.table.clearContents()
-        self.makeKospiTabke()
+
+        if self.rbtn_kospi.isChecked():
+            self.makeKospiTable()
+        elif self.rbtn_nyse.isChecked():
+            self.makeNyseTable()
+        elif self.rbtn_nasdaq.isChecked():
+            self.makeNasdaqTable()
 
     def btn_page_next(self):
-        self.table.scrollToBottom()
+        # self.table.scrollToBottom()
+        self.table.scrollToTop()
         if self.cPage < self.maxPage:
             self.cPage += 1
-
         print('page :', self.cPage)
         self.table.clearContents()
-        self.makeKospiTabke()
+
+        if self.rbtn_kospi.isChecked():
+            self.makeKospiTable()
+        elif self.rbtn_nyse.isChecked():
+            self.makeNyseTable()
+        elif self.rbtn_nasdaq.isChecked():
+            self.makeNasdaqTable()
+
 
     def updateUiCellClick(self, r, i):
         index = r + (self.cPage * self.pageperMax)

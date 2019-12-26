@@ -268,24 +268,24 @@
      <string>3m</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>290</x>
-      <y>160</y>
-      <width>51</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>help</string>
-    </property>
-   </widget>
    <widget class="QToolButton" name="btn_more1">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>190</y>
+      <x>245</x>
+      <y>185</y>
+      <width>27</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>...</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="btn_more2">
+    <property name="geometry">
+     <rect>
+      <x>246</x>
+      <y>217</y>
       <width>27</width>
       <height>18</height>
      </rect>
