@@ -40,7 +40,7 @@ class TableWidget(QWidget):
         # for i in df.index:
         #     if df['업종명'][i] != 'KOSPI' and df['업종명'][i] != 'KOSDAQ':
         print('3', df.size)
-
+        self.pageMax = 4
         self.table.setRowCount(self.pageMax)
         self.table.setColumnCount(2)
         self.table.setHorizontalHeaderLabels(('code','name'))
