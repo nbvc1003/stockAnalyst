@@ -37,7 +37,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
     def iniUI(self):
         self.m = PlotCanvas(self)
-        self.m.move(30, 330) # 초기 위치 설정
+        self.m.move(30, 290) # 초기 위치 설정
 
         self.rb_1m.clicked.connect(self.rbtn_setPeriod)
         self.rb_3m.clicked.connect(self.rbtn_setPeriod)
@@ -49,6 +49,11 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
         # self.show()
 
+# ===============================================================================
+    def resiveData(self, code):
+        print(code)
+        self.lineEdit_1.setText(code + '.KS')
+        self.tw.close()
 
 #===============================================================================
 
@@ -141,7 +146,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
     def btnMore(self):
 
-        self.tw = modules.tableWidget.TableWidget()
+        self.tw = modules.tableWidget.TableWidget(self)
 
         self.tw.show()
 

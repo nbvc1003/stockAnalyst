@@ -56,7 +56,7 @@ class Root(QMainWindow):
 
         self.setWindowTitle('{}'.format(path))
 
-    def updateUiCellClick(self, row, _):
+    def updateUiCellClick(self, row, i):
         path = os.path.join(os.getcwd(), self.filesTable.item(row, 0).text())
         self.populate_table(path)
 
