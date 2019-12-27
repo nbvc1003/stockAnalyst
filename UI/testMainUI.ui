@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>StockAnlyst</class>
+ <widget class="QMainWindow" name="StockAnlyst">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -9,6 +9,11 @@
     <width>1000</width>
     <height>700</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>HY그래픽M</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -23,6 +28,11 @@
       <height>111</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
+    </property>
     <property name="text">
      <string>Start</string>
     </property>
@@ -36,6 +46,11 @@
       <height>111</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
+    </property>
     <property name="text">
      <string>Clear</string>
     </property>
@@ -44,10 +59,15 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>60</y>
+      <y>43</y>
       <width>64</width>
       <height>15</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>시작날짜</string>
@@ -57,10 +77,15 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>90</y>
+      <y>73</y>
       <width>121</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="calendarPopup">
      <bool>true</bool>
@@ -70,10 +95,15 @@
     <property name="geometry">
      <rect>
       <x>200</x>
-      <y>60</y>
+      <y>43</y>
       <width>81</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>마지막날짜</string>
@@ -83,10 +113,15 @@
     <property name="geometry">
      <rect>
       <x>180</x>
-      <y>90</y>
+      <y>73</y>
       <width>121</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="calendarPopup">
      <bool>true</bool>
@@ -96,30 +131,45 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>186</y>
+      <y>169</y>
       <width>141</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
    </widget>
    <widget class="QLineEdit" name="lineEdit_2">
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>216</y>
+      <y>199</y>
       <width>141</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>190</y>
+      <x>30</x>
+      <y>173</y>
       <width>64</width>
       <height>15</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>대상종목:</string>
@@ -128,11 +178,16 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>220</y>
+      <x>30</x>
+      <y>203</y>
       <width>64</width>
       <height>15</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>비교종목:</string>
@@ -147,41 +202,25 @@
       <height>281</height>
      </rect>
     </property>
-   </widget>
-   <widget class="QLabel" name="lbl_stat">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>15</y>
-      <width>281</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>state</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="lbl_today">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>20</y>
-      <width>71</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TodayDate</string>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
    </widget>
    <widget class="QLabel" name="lbl_prierd">
     <property name="geometry">
      <rect>
       <x>340</x>
-      <y>92</y>
+      <y>75</y>
       <width>56</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>0 Day</string>
@@ -191,10 +230,15 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>250</y>
+      <y>233</y>
       <width>301</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>ex) 애플: APPL   , 삼성: 005930.KS</string>
@@ -204,36 +248,51 @@
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>150</y>
+      <y>133</y>
       <width>51</width>
       <height>19</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
+    </property>
     <property name="text">
-     <string>2y</string>
+     <string>2Y</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="rb_1y">
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>150</y>
+      <y>133</y>
       <width>51</width>
       <height>19</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
+    </property>
     <property name="text">
-     <string>1y</string>
+     <string>1Y</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="rb_6m">
     <property name="geometry">
      <rect>
       <x>140</x>
-      <y>150</y>
+      <y>133</y>
       <width>51</width>
       <height>19</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>6m</string>
@@ -243,10 +302,15 @@
     <property name="geometry">
      <rect>
       <x>240</x>
-      <y>150</y>
+      <y>133</y>
       <width>51</width>
       <height>19</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>1m</string>
@@ -259,10 +323,15 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>150</y>
+      <y>133</y>
       <width>51</width>
       <height>19</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>3m</string>
@@ -271,11 +340,16 @@
    <widget class="QToolButton" name="btn_more1">
     <property name="geometry">
      <rect>
-      <x>245</x>
-      <y>185</y>
+      <x>330</x>
+      <y>168</y>
       <width>27</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
     </property>
     <property name="text">
      <string>...</string>
@@ -284,14 +358,41 @@
    <widget class="QToolButton" name="btn_more2">
     <property name="geometry">
      <rect>
-      <x>246</x>
-      <y>217</y>
+      <x>330</x>
+      <y>200</y>
       <width>27</width>
       <height>18</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+     </font>
+    </property>
     <property name="text">
      <string>...</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>147</x>
+      <y>85</y>
+      <width>31</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>MS Gothic</family>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>~</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
@@ -318,7 +419,7 @@
   <connection>
    <sender>btn_start</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>StockAnlyst</receiver>
    <slot>aStart()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -334,7 +435,7 @@
   <connection>
    <sender>btn_cancel</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>StockAnlyst</receiver>
    <slot>cancel()</slot>
    <hints>
     <hint type="sourcelabel">

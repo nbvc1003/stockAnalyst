@@ -27,10 +27,11 @@ LINE_EDIT_2 = 1
 class Main(QMainWindow): #  ui파일로 로드 하는 방식
     def __init__(self):
         super().__init__()
-
+        
         uic.loadUi(MainUI,self)
         # self.setupUi(self)
         self.iniUI()
+        self.setWindowTitle('금융상품분석툴')
         self.mainState = 0
         self.setUI()
 
@@ -163,11 +164,12 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
     def btnMore1(self):
         self.tw1 = modules.tableWidget.TableWidget(self, LINE_EDIT_1)
-
+        self.tw1.move(self.pos())
         self.tw1.show()
 
     def btnMore2(self):
         self.tw2 = modules.tableWidget.TableWidget(self, LINE_EDIT_2)
+        self.tw2.move(self.pos())
         self.tw2.show()
 
 
@@ -252,12 +254,12 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # 데이터 길이가 다를경우 강제로 사이즈 조절
         if len(tsd) > len(csd):
             tsd = tsd[0:len(csd)]
-            print(tsd.size)
-            print(csd.size)
+            # print(tsd.size)
+            # print(csd.size)
         elif len(tsd) < len(csd):
             csd = csd[0:len(tsd)]
-            print(tsd.size)
-            print(csd.size)
+            # print(tsd.size)
+            # print(csd.size)
 
         # if len(tsd) != len(csd):
         #     self.textEdit_info.append('데이터의 길이가 다릅니다. !!!!! {} / {}'.format(len(tsd), len(csd)))
@@ -274,23 +276,14 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         if csd.isnull().values.any():
             print('csd isnull')
             csd = csd.fillna(csd.mean())
-
-
-        print(tsd)
-        print(csd)
-
-
+        # print(tsd)
+        # print(csd)
         corr = tsd.corr(csd)
-        print('corr:',corr, type(corr))
-
-
+        # print('corr:',corr, type(corr))
         title = '{} / {}'.format(targetStockCode,compStockCode )
         self.textEdit_info.append("종목: "+ title)
-
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))
         self.textEdit_info.append('상관관계 : {}'.format(corr))
-
-
         self.m.plot2(tsd, csd)
         self.m.plot1(list(tsd), list(csd),title=title,  markup='k.',xlabel=targetStockCode,ylabel=compStockCode, start=start, end=end)
 
@@ -389,4 +382,5 @@ class PlotCanvas(FigureCanvas):
 app = QApplication([])
 ex = Main()
 ex.show()
-sys.exit(app.exec_())
+if app.exec_() == 0:
+    sys.exit()

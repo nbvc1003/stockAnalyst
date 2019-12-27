@@ -11,6 +11,7 @@ class TableWidget(QWidget):
         self.maxPage = 0
         self.pageperMax = 40
         self.table = QTableWidget()
+        self.table.verticalHeader().setVisible(False)# index 삭제
         self.initUI()
         self.parent = parent
         self.editTab = opt
@@ -18,7 +19,7 @@ class TableWidget(QWidget):
 
     def initUI(self):
         self.setWindowTitle('종목코드리스트')
-        self.setGeometry(100, 100, 400,800)
+        self.setGeometry(100, 100, 400,600)
 
         self.createKospiTable()
         self.table.cellClicked.connect(self.updateUiCellClick)
@@ -77,14 +78,9 @@ class TableWidget(QWidget):
     def makeKospiTable(self):
         self.table.clearContents()
         for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
-            # print(df.columns.values.)
-            # print(list(df.columns.values).index('종목명'))
             if r >= len(self.df.index):
                 break
-
             _index = r - (self.cPage * self.pageperMax)
-            # print(_index, r)
-            # print(self.df.iloc[r,list(self.df.columns.values).index('종목명')])
             self.table.setItem(_index, 0, QTableWidgetItem(
                                    self.df.iloc[r,list(self.df.columns.values).index('종목명')]))
             self.table.setItem(_index, 1, QTableWidgetItem(
@@ -212,8 +208,6 @@ class TableWidget(QWidget):
         elif self.rbtn_nasdaq.isChecked():
             code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
             self.parent.recivedNasdatSet(code, self.editTab)
-
-
 
 
 if __name__ == "__main__":
