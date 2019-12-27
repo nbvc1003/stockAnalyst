@@ -22,6 +22,10 @@ import urllib.request as req
 import modules.tableWidget
 MainUI = "../UI/testMainUI.ui"
 
+LINE_EDIT_1 = 0
+LINE_EDIT_2 = 1
+
+
 ## 메인 클래스
 # class Main(QMainWindow, Ui_MainWindow): 
 class Main(QMainWindow): #  ui파일로 로드 하는 방식
@@ -45,14 +49,31 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         self.rb_1y.clicked.connect(self.rbtn_setPeriod)
         self.rb_2y.clicked.connect(self.rbtn_setPeriod)
 
-        self.btn_more1.clicked.connect(self.btnMore)
+        self.btn_more1.clicked.connect(self.btnMore1)
+        self.btn_more2.clicked.connect(self.btnMore2)
 
         # self.show()
 
 # ===============================================================================
-    def resiveData(self, code):
-        print(code)
-        self.lineEdit_1.setText(code + '.KS')
+    def recivedKospiCodeSet(self, code, tab):
+        if tab == LINE_EDIT_1:
+            self.lineEdit_1.setText(code + '.KS')
+        elif tab == LINE_EDIT_2:
+            self.lineEdit_2.setText(code + '.KS')
+        self.tw.close()
+
+    def recivedNyseSet(self, code, tab):
+        if tab == LINE_EDIT_1:
+            self.lineEdit_1.setText(code)
+        elif tab == LINE_EDIT_2:
+            self.lineEdit_2.setText(code)
+        self.tw.close()
+
+    def recivedNasdatSet(self, code, tab):
+        if tab == LINE_EDIT_1:
+            self.lineEdit_1.setText(code)
+        elif tab == LINE_EDIT_2:
+            self.lineEdit_2.setText(code)
         self.tw.close()
 
 #===============================================================================
@@ -144,10 +165,13 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             self.dateEdit.setDate(date.today() + timedelta(days=-30*24))
             self.dateEdit_2.setDate(date.today())
 
-    def btnMore(self):
+    def btnMore1(self):
+        self.tw = modules.tableWidget.TableWidget(self, LINE_EDIT_1)
 
-        self.tw = modules.tableWidget.TableWidget(self)
+        self.tw.show()
 
+    def btnMore2(self):
+        self.tw = modules.tableWidget.TableWidget(self, LINE_EDIT_2)
         self.tw.show()
 
 
@@ -173,7 +197,6 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             return
 
         self.textEdit_info.append("========================")
-
 
         try:
             targetStock_df = data.DataReader(targetStockCode, "yahoo", start, end)  # start ~ end 까지
