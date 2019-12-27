@@ -7,16 +7,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QHBoxLayout
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 from bs4 import BeautifulSoup as bs
-
 # from scipy import stats
 import random, sys
 import pandas as pd
 # import statsmodels.formula.api as sm
 from PyQt5 import uic
 import urllib.request as req
-
-
-
 
 # from testMainUI import Ui_MainWindow
 import modules.tableWidget
@@ -60,21 +56,21 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             self.lineEdit_1.setText(code + '.KS')
         elif tab == LINE_EDIT_2:
             self.lineEdit_2.setText(code + '.KS')
-        self.tw.close()
+        # self.tw.close()
 
     def recivedNyseSet(self, code, tab):
         if tab == LINE_EDIT_1:
             self.lineEdit_1.setText(code)
         elif tab == LINE_EDIT_2:
             self.lineEdit_2.setText(code)
-        self.tw.close()
+        # self.tw.close()
 
     def recivedNasdatSet(self, code, tab):
         if tab == LINE_EDIT_1:
             self.lineEdit_1.setText(code)
         elif tab == LINE_EDIT_2:
             self.lineEdit_2.setText(code)
-        self.tw.close()
+        # self.tw.close()
 
 #===============================================================================
 
@@ -166,13 +162,13 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             self.dateEdit_2.setDate(date.today())
 
     def btnMore1(self):
-        self.tw = modules.tableWidget.TableWidget(self, LINE_EDIT_1)
+        self.tw1 = modules.tableWidget.TableWidget(self, LINE_EDIT_1)
 
-        self.tw.show()
+        self.tw1.show()
 
     def btnMore2(self):
-        self.tw = modules.tableWidget.TableWidget(self, LINE_EDIT_2)
-        self.tw.show()
+        self.tw2 = modules.tableWidget.TableWidget(self, LINE_EDIT_2)
+        self.tw2.show()
 
 
     def inputData(self, targetStockCode, compStockCode, start, end ):
@@ -214,12 +210,9 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         if  targetStock_df is None or compStock_df is None:
             self.textEdit_info.append('오류발생 !!!!!')
             return
-        #
-        # print(targetStock_df)
-        # print(compStock_df)
-        print(targetStock_df.size)
-        print(compStock_df.size)
-        
+
+        # print(targetStock_df.size)
+        # print(compStock_df.size)
 
         tsd = targetStock_df['Close']
         csd = compStock_df['Close']

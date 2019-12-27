@@ -1,6 +1,5 @@
-import sys, re
+import sys
 import pandas as pd
-import numpy as np
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QPushButton, \
     QHBoxLayout, QRadioButton
 
@@ -18,7 +17,7 @@ class TableWidget(QWidget):
 
 
     def initUI(self):
-        self.setWindowTitle('테이블팝업윈도우')
+        self.setWindowTitle('종목코드리스트')
         self.setGeometry(100, 100, 400,800)
 
         self.createKospiTable()
@@ -42,7 +41,6 @@ class TableWidget(QWidget):
         tab_layout.addWidget(self.rbtn_nasdaq)
         self.rbtn_kospi.setChecked(True)
 
-
         self.layout.addWidget(self.table)
         btn_layout = QHBoxLayout()
         for text, slot in ( ("Prev Page", self.btn_page_pre), ("Next Page", self.btn_page_next)):
@@ -53,8 +51,6 @@ class TableWidget(QWidget):
         self.layout.addLayout(tab_layout)
         self.layout.addLayout(btn_layout)
         self.setLayout(self.layout)
-
-        # self.show()
 
     def createKospiTable(self):
         self.df = pd.read_csv('../forExe/kospi_kosdaq_code.csv', encoding='euc-kr')
