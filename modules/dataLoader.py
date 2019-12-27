@@ -21,7 +21,6 @@ class dataLoader():
     def init(self):
         pass
 
-
     def get_DF(self, arg):
         if arg == KOSPI:
             return self.kospi_df
@@ -31,6 +30,7 @@ class dataLoader():
             return self.nasdaq_df
 
     def get_SymbolByName(self, name):
+
         result = str(self.kospi_df['종목코드'][self.kospi_df['종목명'] == name])
         if len(result) < 1:
             result = str(self.nyse_df['Symbol'][self.nyse_df['Name'] == name])
@@ -42,7 +42,6 @@ class dataLoader():
         # print(symbol)
         result = str(self.nasdaq_df['Name'][self.nasdaq_df['Symbol'] == symbol])
         return result
-
 
 
 if __name__ == "__main__":
