@@ -1,7 +1,8 @@
 import sys
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QPushButton, \
-    QHBoxLayout, QRadioButton
+    QHBoxLayout, QRadioButton, QLabel
+
 
 class TableWidget(QWidget):
 
@@ -29,6 +30,10 @@ class TableWidget(QWidget):
         self.layout = QVBoxLayout()
 
         tab_layout = QHBoxLayout()
+
+
+
+
         self.rbtn_kospi = QRadioButton("KOSPI")
         self.rbtn_kospi.clicked.connect(self.btn_tab_kospi)
         tab_layout.addWidget(self.rbtn_kospi)
@@ -54,8 +59,8 @@ class TableWidget(QWidget):
         self.setLayout(self.layout)
 
     def createKospiTable(self):
-        self.df = pd.read_csv('../forExe/kospi_kosdaq_code.csv', encoding='euc-kr')
-        # print(df.tail())
+        self.df = pd.read_csv('readFiles/kospi_kosdaq_code.csv', encoding='euc-kr')
+        # print(self.df.tail())
         print('1',len(self.df.index))
 
         self.df.replace(to_replace=r'\'', value='',regex=True,inplace=True)
@@ -87,7 +92,7 @@ class TableWidget(QWidget):
                                    self.df.iloc[r,list(self.df.columns.values).index('종목코드')]))
 
     def createNyseTable(self):
-        self.df = pd.read_csv('../forExe/nyse_symbol.csv', encoding='utf-8')
+        self.df = pd.read_csv('readFiles/nyse_symbol.csv', encoding='utf-8')
         # print(len(self.df.index))
         for i in self.df.index:
             temp = self.df.at[i, 'Symbol']
@@ -121,7 +126,7 @@ class TableWidget(QWidget):
                                    self.df.iloc[r,list(self.df.columns.values).index('Symbol')]))
         
     def createNasdaqTable(self):
-        self.df = pd.read_csv('../forExe/nsdaq_symbol.csv', encoding='utf-8')
+        self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
         for i in self.df.index:
             temp = self.df.at[i, 'Symbol']
             if '^'in temp or '.' in temp:

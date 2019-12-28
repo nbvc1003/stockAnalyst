@@ -13,9 +13,9 @@ NASDAQ = 2
 
 class dataLoader():
     def __init__(self):
-        self.kospi_df = pd.read_csv('../forExe/kospi_kosdaq_code.csv', encoding='euc-kr')
-        self.nyse_df = pd.read_csv('../forExe/nyse_symbol.csv', encoding='utf-8')
-        self.nasdaq_df = pd.read_csv('../forExe/nsdaq_symbol.csv', encoding='utf-8')
+        self.kospi_df = pd.read_csv('../readFiles/kospi_kosdaq_code.csv', encoding='euc-kr')
+        self.nyse_df = pd.read_csv('../readFiles/nyse_symbol.csv', encoding='utf-8')
+        self.nasdaq_df = pd.read_csv('../readFiles/nsdaq_symbol.csv', encoding='utf-8')
 
         self.init()
 

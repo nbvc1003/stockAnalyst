@@ -3,24 +3,27 @@ from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
 import numpy as np
 from numpy import polyval
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QMessageBox, QAction
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from bs4 import BeautifulSoup as bs
 
 # from scipy import stats
 import random, sys
 import pandas as pd
 # import statsmodels.formula.api as sm
 from PyQt5 import uic
-import urllib.request as req
-
-from testMainUI import Ui_MainWindow
-MainUI = "../UI/testMainUI.ui"
+## local modules
+import modules.tableWidget
 
 
+
+MainUI = "UI/testMainUI.ui"
+LINE_EDIT_1 = 0
+LINE_EDIT_2 = 1
+
+from UI.testMainUI import Ui_StockAnlyst
 ## 메인 클래스
-class Main(QMainWindow, Ui_MainWindow):
+class Main(QMainWindow, Ui_StockAnlyst):
 # class Main(QMainWindow):  # ui파일로 로드 하는 방식
     def __init__(self):
         super().__init__()
@@ -28,12 +31,29 @@ class Main(QMainWindow, Ui_MainWindow):
         # uic.loadUi(MainUI, self)
         self.setupUi(self)
         self.iniUI()
-        self.mainState = 0
+        self.setWindowTitle('금융상품분석툴')
+
+        menubar = self.menuBar()
+
+        helpMenu = menubar.addMenu('Help')
+
+        aboutButton = QAction('About', self)
+        aboutButton.triggered.connect(self.aboutMsg)
+        helpMenu.addAction(aboutButton)
+
+        exitButton = QAction('Exit', self)
+        exitButton.setShortcut('Ctrl+Q')
+        exitButton.setStatusTip('Exit application')
+        exitButton.triggered.connect(self.close)
+        helpMenu.addAction(exitButton)
+
+        self.statusBar().showMessage('빅데이터 분석 2차 프로젝트 1조 2020.1.3')
         self.setUI()
 
     def iniUI(self):
         self.m = PlotCanvas(self)
-        self.m.move(30, 330)  # 초기 위치 설정
+        # self.m = modules.plotCanvas.PlotCanvas(self)
+        self.m.move(30, 290)  # 초기 위치 설정
 
         self.rb_1m.clicked.connect(self.rbtn_setPeriod)
         self.rb_3m.clicked.connect(self.rbtn_setPeriod)
@@ -41,7 +61,34 @@ class Main(QMainWindow, Ui_MainWindow):
         self.rb_1y.clicked.connect(self.rbtn_setPeriod)
         self.rb_2y.clicked.connect(self.rbtn_setPeriod)
 
+        self.btn_more1.clicked.connect(self.btnMore1)
+        self.btn_more2.clicked.connect(self.btnMore2)
+
+        # self.lbl_prierd.clicked.connect(self.btnMore2)
+
         # self.show()
+
+    # ===============================================================================
+    def recivedKospiCodeSet(self, code, tab):
+        if tab == LINE_EDIT_1:
+            self.lineEdit_1.setText(code + '.KS')
+        elif tab == LINE_EDIT_2:
+            self.lineEdit_2.setText(code + '.KS')
+        # self.tw.close()
+
+    def recivedNyseSet(self, code, tab):
+        if tab == LINE_EDIT_1:
+            self.lineEdit_1.setText(code)
+        elif tab == LINE_EDIT_2:
+            self.lineEdit_2.setText(code)
+        # self.tw.close()
+
+    def recivedNasdatSet(self, code, tab):
+        if tab == LINE_EDIT_1:
+            self.lineEdit_1.setText(code)
+        elif tab == LINE_EDIT_2:
+            self.lineEdit_2.setText(code)
+        # self.tw.close()
 
     # ===============================================================================
 
@@ -132,6 +179,28 @@ class Main(QMainWindow, Ui_MainWindow):
             self.dateEdit.setDate(date.today() + timedelta(days=-30 * 24))
             self.dateEdit_2.setDate(date.today())
 
+    def btnMore1(self):
+        self.tw1 = modules.tableWidget.TableWidget(self, LINE_EDIT_1)
+        self.tw1.move(self.pos())
+        self.tw1.show()
+
+    def btnMore2(self):
+        self.tw2 = modules.tableWidget.TableWidget(self, LINE_EDIT_2)
+        self.tw2.move(self.pos())
+        self.tw2.show()
+
+    def aboutMsg(self):
+        QMessageBox.about(self, "about",
+                          '''
+                          
+프로그램명: 금융상품분석툴
+제작자: nbvc
+e-mail: nbvc1003@gmail.com
+내용: 과제 프로젝트 산출물
+버전: v 0.1.alpha
+        
+        ''')
+
     def inputData(self, targetStockCode, compStockCode, start, end):
         print('inputData targetStockCode :', targetStockCode, compStockCode)
 
@@ -171,11 +240,9 @@ class Main(QMainWindow, Ui_MainWindow):
         if targetStock_df is None or compStock_df is None:
             self.textEdit_info.append('오류발생 !!!!!')
             return
-        #
-        # print(targetStock_df)
-        # print(compStock_df)
-        print(targetStock_df.size)
-        print(compStock_df.size)
+
+        # print(targetStock_df.size)
+        # print(compStock_df.size)
 
         tsd = targetStock_df['Close']
         csd = compStock_df['Close']
@@ -214,12 +281,12 @@ class Main(QMainWindow, Ui_MainWindow):
         # 데이터 길이가 다를경우 강제로 사이즈 조절
         if len(tsd) > len(csd):
             tsd = tsd[0:len(csd)]
-            print(tsd.size)
-            print(csd.size)
+            # print(tsd.size)
+            # print(csd.size)
         elif len(tsd) < len(csd):
             csd = csd[0:len(tsd)]
-            print(tsd.size)
-            print(csd.size)
+            # print(tsd.size)
+            # print(csd.size)
 
         # if len(tsd) != len(csd):
         #     self.textEdit_info.append('데이터의 길이가 다릅니다. !!!!! {} / {}'.format(len(tsd), len(csd)))
@@ -236,19 +303,14 @@ class Main(QMainWindow, Ui_MainWindow):
         if csd.isnull().values.any():
             print('csd isnull')
             csd = csd.fillna(csd.mean())
-
-        print(tsd)
-        print(csd)
-
+        # print(tsd)
+        # print(csd)
         corr = tsd.corr(csd)
-        print('corr:', corr, type(corr))
-
+        # print('corr:',corr, type(corr))
         title = '{} / {}'.format(targetStockCode, compStockCode)
         self.textEdit_info.append("종목: " + title)
-
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))
         self.textEdit_info.append('상관관계 : {}'.format(corr))
-
         self.m.plot2(tsd, csd)
         self.m.plot1(list(tsd), list(csd), title=title, markup='k.', xlabel=targetStockCode, ylabel=compStockCode,
                      start=start, end=end)
@@ -346,4 +408,5 @@ class PlotCanvas(FigureCanvas):
 app = QApplication([])
 ex = Main()
 ex.show()
-sys.exit(app.exec_())
+if app.exec_() == 0:
+    sys.exit()

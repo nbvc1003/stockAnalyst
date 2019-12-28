@@ -3,19 +3,19 @@ from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
 import numpy as np
 from numpy import polyval
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QMessageBox, QAction
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from bs4 import BeautifulSoup as bs
+
 # from scipy import stats
 import random, sys
 import pandas as pd
 # import statsmodels.formula.api as sm
 from PyQt5 import uic
-import urllib.request as req
 
 # from testMainUI import Ui_MainWindow
 import modules.tableWidget
+
 MainUI = "../UI/testMainUI.ui"
 
 LINE_EDIT_1 = 0
@@ -24,21 +24,35 @@ LINE_EDIT_2 = 1
 
 ## 메인 클래스
 # class Main(QMainWindow, Ui_MainWindow): 
-class Main(QMainWindow): #  ui파일로 로드 하는 방식
+class Main(QMainWindow):  # ui파일로 로드 하는 방식
     def __init__(self):
         super().__init__()
-        
-        uic.loadUi(MainUI,self)
+
+        uic.loadUi(MainUI, self)
         # self.setupUi(self)
         self.iniUI()
         self.setWindowTitle('금융상품분석툴')
-        self.mainState = 0
-        self.setUI()
 
+        menubar = self.menuBar()
+
+        helpMenu = menubar.addMenu('Help')
+
+        aboutButton = QAction('About', self)
+        aboutButton.triggered.connect(self.aboutMsg)
+        helpMenu.addAction(aboutButton)
+
+        exitButton = QAction('Exit', self)
+        exitButton.setShortcut('Ctrl+Q')
+        exitButton.setStatusTip('Exit application')
+        exitButton.triggered.connect(self.close)
+        helpMenu.addAction(exitButton)
+
+        self.statusBar().showMessage('빅데이터 분석 2차 프로젝트 1조 2020.1.3')
+        self.setUI()
 
     def iniUI(self):
         self.m = PlotCanvas(self)
-        self.m.move(30, 290) # 초기 위치 설정
+        self.m.move(30, 290)  # 초기 위치 설정
 
         self.rb_1m.clicked.connect(self.rbtn_setPeriod)
         self.rb_3m.clicked.connect(self.rbtn_setPeriod)
@@ -49,9 +63,11 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         self.btn_more1.clicked.connect(self.btnMore1)
         self.btn_more2.clicked.connect(self.btnMore2)
 
+        # self.lbl_prierd.clicked.connect(self.btnMore2)
+
         # self.show()
 
-# ===============================================================================
+    # ===============================================================================
     def recivedKospiCodeSet(self, code, tab):
         if tab == LINE_EDIT_1:
             self.lineEdit_1.setText(code + '.KS')
@@ -73,14 +89,14 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             self.lineEdit_2.setText(code)
         # self.tw.close()
 
-#===============================================================================
+    # ===============================================================================
 
     def setUI(self):
 
         print(date.today())
         self.dateEdit.setDate(date.today() + timedelta(days=-30))
-        #time2 + timedelta(days=-3)
-        self.dateEdit_2.setDate(date.today() )
+        # time2 + timedelta(days=-3)
+        self.dateEdit_2.setDate(date.today())
 
         self.btn_start.setEnabled(True)
         self.lineEdit_1.setText('AMD')
@@ -93,12 +109,12 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # 필요하다면 state변수도 전달 한다.
         # self.btn_start.clicked.connect(lambda state, button = self.btn_start : self.btnTest(state, button))
 
-    def btnTest(self,state, btn):
+    def btnTest(self, state, btn):
         print(state, type(state))
         print(btn)
         print('btn test')
 
-## UI slots
+    ## UI slots
     ## start 버튼
     def aStart(self):
 
@@ -109,7 +125,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
         # print(self.lineEdit_1.text())
         # print(self.lineEdit_2.text())
-        
+
         # 소문자 대문자로
         input1 = self.lineEdit_1.text()
         input2 = self.lineEdit_2.text()
@@ -128,7 +144,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
 
         self.lbl_prierd.setText(str((end - start).days) + " day")
 
-        if (input1 ,input2 != None) and (len(input1) > 0 and len(input2) > 0):
+        if (input1, input2 != None) and (len(input1) > 0 and len(input2) > 0):
             self.inputData(input1, input2, start, end)
         else:
             print('입력코드값 오류')
@@ -150,16 +166,16 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             self.dateEdit.setDate(date.today() + timedelta(days=-30))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_3m.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*3))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 3))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_6m.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*6))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 6))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_1y.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*12))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 12))
             self.dateEdit_2.setDate(date.today())
         elif self.rb_2y.isChecked():
-            self.dateEdit.setDate(date.today() + timedelta(days=-30*24))
+            self.dateEdit.setDate(date.today() + timedelta(days=-30 * 24))
             self.dateEdit_2.setDate(date.today())
 
     def btnMore1(self):
@@ -171,16 +187,28 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         self.tw2 = modules.tableWidget.TableWidget(self, LINE_EDIT_2)
         self.tw2.move(self.pos())
         self.tw2.show()
+        self.clickMethod()
 
+    def aboutMsg(self):
+        QMessageBox.about(self, "about",
+                          '''
+                          
+프로그램명: 금융상품분석툴
+제작자: nbvc
+e-mail: nbvc1003@gmail.com
+내용: 과제 프로젝트 산출물
+버전: v 0.1.alpha
+        
+        ''')
 
-    def inputData(self, targetStockCode, compStockCode, start, end ):
-        print('inputData targetStockCode :', targetStockCode,  compStockCode)
+    def inputData(self, targetStockCode, compStockCode, start, end):
+        print('inputData targetStockCode :', targetStockCode, compStockCode)
 
         # 코드 채크
-        if targetStockCode == None :
+        if targetStockCode == None:
             targetStockCode = 'AMD'
 
-        if compStockCode == None :
+        if compStockCode == None:
             compStockCode = 'AAPL'
 
         # 날짜 채크
@@ -209,7 +237,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             print('애러발생 2{}'.format(err))
             return
 
-        if  targetStock_df is None or compStock_df is None:
+        if targetStock_df is None or compStock_df is None:
             self.textEdit_info.append('오류발생 !!!!!')
             return
 
@@ -219,7 +247,7 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         tsd = targetStock_df['Close']
         csd = compStock_df['Close']
 
-        #가져온 데이터의 길이가 다르면
+        # 가져온 데이터의 길이가 다르면
         if tsd.size > csd.size:
             csd = pd.merge(tsd, csd, on='Date', how='outer')
             csd = csd['Close_y']
@@ -227,11 +255,10 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
             tsd = pd.merge(csd, tsd, on='Date', how='outer')
             tsd = tsd['Close_y']
 
-        print("2",tsd.size)
-        print("2",csd.size)
+        print("2", tsd.size)
+        print("2", csd.size)
 
-
-        #===================================================================================
+        # ===================================================================================
         ## from scipy import stats 사용할경우
         # slope, intersecept, r_value, p_value, stderr = stats.linregress(tsd, csd)
         # ConsolePrint(slope, intersecept, r_value, p_value)
@@ -239,18 +266,18 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # print(tsd, type(tsd))
         # ry = polyval([slope, intersecept], tsd)
         # print(targetStock_df['Close'])
-        #========================================================================
+        # ========================================================================
 
         # print('tsd',tsd)
         # print('csd',csd)
 
         if len(tsd) < 1:
-            self.textEdit_info.append(targetStockCode +' 종목 정보를 가져오지 못했습니다.')
+            self.textEdit_info.append(targetStockCode + ' 종목 정보를 가져오지 못했습니다.')
             return
         if len(csd) < 1:
-            self.textEdit_info.append(compStockCode +' 종목 정보를 가져오지 못했습니다.')
+            self.textEdit_info.append(compStockCode + ' 종목 정보를 가져오지 못했습니다.')
             return
-        
+
         # 데이터 길이가 다를경우 강제로 사이즈 조절
         if len(tsd) > len(csd):
             tsd = tsd[0:len(csd)]
@@ -280,12 +307,13 @@ class Main(QMainWindow): #  ui파일로 로드 하는 방식
         # print(csd)
         corr = tsd.corr(csd)
         # print('corr:',corr, type(corr))
-        title = '{} / {}'.format(targetStockCode,compStockCode )
-        self.textEdit_info.append("종목: "+ title)
+        title = '{} / {}'.format(targetStockCode, compStockCode)
+        self.textEdit_info.append("종목: " + title)
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))
         self.textEdit_info.append('상관관계 : {}'.format(corr))
         self.m.plot2(tsd, csd)
-        self.m.plot1(list(tsd), list(csd),title=title,  markup='k.',xlabel=targetStockCode,ylabel=compStockCode, start=start, end=end)
+        self.m.plot1(list(tsd), list(csd), title=title, markup='k.', xlabel=targetStockCode, ylabel=compStockCode,
+                     start=start, end=end)
 
         # self.m.plot(tsd, ry, markup='r')
 
@@ -303,7 +331,7 @@ class PlotCanvas(FigureCanvas):
         FigureCanvas.updateGeometry(self)
         self.ax = self.figure.add_subplot(111)
 
-    def plot1(self, *data, markup = None, title = '', xlabel='', ylabel='', start=None, end=None):
+    def plot1(self, *data, markup=None, title='', xlabel='', ylabel='', start=None, end=None):
 
         if len(data) == 0:
             print('data len is 0 !!!!!!!')
@@ -356,7 +384,6 @@ class PlotCanvas(FigureCanvas):
         self.ax.cla()
         self.draw()
 
-
     def qr_householder(self, A):
         m, n = A.shape
         Q = np.eye(m)  # Orthogonal transform so far
@@ -376,7 +403,6 @@ class PlotCanvas(FigureCanvas):
             Q[:, j:] = Q[:, j:] - beta * Q[:, j:].dot(np.outer(u, u))
 
         return Q, R
-
 
 
 app = QApplication([])
