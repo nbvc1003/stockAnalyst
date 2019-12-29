@@ -69,26 +69,16 @@ class Main(QMainWindow, Ui_StockAnlyst):
         # self.show()
 
     # ===============================================================================
-    def recivedKospiCodeSet(self, code, tab):
-        if tab == LINE_EDIT_1:
-            self.lineEdit_1.setText(code + '.KS')
-        elif tab == LINE_EDIT_2:
-            self.lineEdit_2.setText(code + '.KS')
-        # self.tw.close()
 
-    def recivedNyseSet(self, code, tab):
-        if tab == LINE_EDIT_1:
-            self.lineEdit_1.setText(code)
-        elif tab == LINE_EDIT_2:
-            self.lineEdit_2.setText(code)
-        # self.tw.close()
+    def setLineEditValue(self, code , opt, cat):
 
-    def recivedNasdatSet(self, code, tab):
-        if tab == LINE_EDIT_1:
+        if cat == 'kospi':
+            code = code + '.KS'
+
+        if opt == LINE_EDIT_1:
             self.lineEdit_1.setText(code)
-        elif tab == LINE_EDIT_2:
+        elif opt == LINE_EDIT_2:
             self.lineEdit_2.setText(code)
-        # self.tw.close()
 
     # ===============================================================================
 

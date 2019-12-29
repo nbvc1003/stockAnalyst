@@ -25,14 +25,11 @@ class TableWidget(QWidget):
         self.createKospiTable()
         self.table.cellClicked.connect(self.updateUiCellClick)
 
-        self.makeKospiTable()
+        self.addTableListItems()
 
         self.layout = QVBoxLayout()
 
         tab_layout = QHBoxLayout()
-
-
-
 
         self.rbtn_kospi = QRadioButton("KOSPI")
         self.rbtn_kospi.clicked.connect(self.btn_tab_kospi)
@@ -58,18 +55,39 @@ class TableWidget(QWidget):
         self.layout.addLayout(btn_layout)
         self.setLayout(self.layout)
 
+    def readCSV(self, opt):
+        if opt == 0:
+            self.df = pd.read_csv('readFiles/kospi_list.csv', names=['Name', 'Symbol', '업종', '주요제품',
+                                                                 '상장일', '결산월', '대표자명', '홈페이지', '지역'], encoding='utf-8')
+        elif opt == 1:
+            self.df = pd.read_csv('readFiles/nyse_symbol.csv', encoding='utf-8')
+        elif opt == 2:
+            self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
+
+
     def createKospiTable(self):
-        self.df = pd.read_csv('readFiles/kospi_kosdaq_code.csv', encoding='euc-kr')
+        # self.df = pd.read_csv('readFiles/kospi_kosdaq_code.csv', encoding='euc-kr')
+        self.df = pd.read_csv('readFiles/kospi_list.csv',names=['Name','Symbol','업종','주요제품',
+                                                                   '상장일','결산월','대표자명','홈페이지','지역'], encoding='utf-8')
         # print(self.df.tail())
-        print('1',len(self.df.index))
+        # print('1',len(self.df.index))
 
-        self.df.replace(to_replace=r'\'', value='',regex=True,inplace=True)
+        # self.df.replace(to_replace=r'\'', value='',regex=True,inplace=True)
 
-        self.df['종목코드'] = self.df['종목코드'].dropna(axis=0)
-        self.df['종목명'] = self.df['종목명'].dropna(axis=0)
-        self.df['업종명'] = self.df['업종명'].dropna(axis=0)
-        self.df['대분류'] = self.df['대분류'].dropna(axis=0)
-        self.df = self.df[self.df['대분류'] == '주식']
+        self.df['Symbol'] = self.df['Symbol'].dropna(axis=0)
+        self.df['Name'] = self.df['Name'].dropna(axis=0)
+
+        ### Dictionary 형으로 변경
+        dfDic = self.df.set_index('Symbol')
+        dfDic = dfDic['Name'].to_dict()
+
+        # get key by value
+        print('삼성전자 ', list(dfDic.keys())[list(dfDic.values()).index('삼성전자')])
+
+        # get value by key
+        print(" value2", dfDic.get('005930'))
+        print(" value", dfDic['005930'])
+
         print('2', len(self.df.index))
         # for i in df.index:
         #     if df['업종명'][i] != 'KOSPI' and df['업종명'][i] != 'KOSDAQ':
@@ -80,20 +98,10 @@ class TableWidget(QWidget):
         self.table.setHorizontalHeaderLabels(('이름','코드'))
         self.table.clearContents()
 
-    def makeKospiTable(self):
-        self.table.clearContents()
-        for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
-            if r >= len(self.df.index):
-                break
-            _index = r - (self.cPage * self.pageperMax)
-            self.table.setItem(_index, 0, QTableWidgetItem(
-                                   self.df.iloc[r,list(self.df.columns.values).index('종목명')]))
-            self.table.setItem(_index, 1, QTableWidgetItem(
-                                   self.df.iloc[r,list(self.df.columns.values).index('종목코드')]))
 
     def createNyseTable(self):
         self.df = pd.read_csv('readFiles/nyse_symbol.csv', encoding='utf-8')
-        # print(len(self.df.index))
+
         for i in self.df.index:
             temp = self.df.at[i, 'Symbol']
             if '^'in temp or '.' in temp:
@@ -101,10 +109,6 @@ class TableWidget(QWidget):
 
         self.df['Symbol'] = self.df['Symbol'].dropna(axis=0)
         self.df['Name'] = self.df['Name'].dropna(axis=0)
-        # self.df.replace(to_replace=r'\^', value='',regex=True,inplace=True)
-
-        # print(self.df.Symbol)
-        # print(len(self.df.index))
 
         self.maxPage = len(self.df.index) // self.pageperMax
         self.table.setRowCount(self.pageperMax)
@@ -112,18 +116,18 @@ class TableWidget(QWidget):
         self.table.setHorizontalHeaderLabels(('이름','심볼'))
         self.table.clearContents()
 
-    def makeNyseTable(self):
-        self.table.clearContents()
-        for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
-            if r >= len(self.df.index):
-                break
-            _index = r - (self.cPage * self.pageperMax)
-            # print(_index, r)
-            # print(self.df.iloc[r,list(self.df.columns.values).index('Symbol')])
-            self.table.setItem(_index, 0, QTableWidgetItem(
-                                   self.df.iloc[r,list(self.df.columns.values).index('Name')]))
-            self.table.setItem(_index, 1, QTableWidgetItem(
-                                   self.df.iloc[r,list(self.df.columns.values).index('Symbol')]))
+    # def makeNyseTable(self):
+    #     self.table.clearContents()
+    #     for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
+    #         if r >= len(self.df.index):
+    #             break
+    #         _index = r - (self.cPage * self.pageperMax)
+    #         # print(_index, r)
+    #         # print(self.df.iloc[r,list(self.df.columns.values).index('Symbol')])
+    #         self.table.setItem(_index, 0, QTableWidgetItem(
+    #                                self.df.iloc[r,list(self.df.columns.values).index('Name')]))
+    #         self.table.setItem(_index, 1, QTableWidgetItem(
+    #                                self.df.iloc[r,list(self.df.columns.values).index('Symbol')]))
         
     def createNasdaqTable(self):
         self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
@@ -141,33 +145,60 @@ class TableWidget(QWidget):
         self.table.setHorizontalHeaderLabels(('이름','심볼'))
         self.table.clearContents()
 
-    def makeNasdaqTable(self):
+    # def makeNasdaqTable(self):
+    #     self.table.clearContents()
+    #     for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
+    #         if r >= len(self.df.index):
+    #             break
+    #         _index = r - (self.cPage * self.pageperMax)
+    #         # print(_index, r)
+    #         # print(self.df.iloc[r,list(self.df.columns.values).index('Symbol')])
+    #         self.table.setItem(_index, 0, QTableWidgetItem(
+    #                                self.df.iloc[r,list(self.df.columns.values).index('Name')]))
+    #         self.table.setItem(_index, 1, QTableWidgetItem(
+    #                                self.df.iloc[r,list(self.df.columns.values).index('Symbol')]))
+
+    def addTableListItems(self):
         self.table.clearContents()
+        # col_index_name = list(self.df.columns.values).index('회사명')
+        # col_index_code = list(self.df.columns.values).index('종목코드')
+        col_index_name = list(self.df.columns.values).index('Name')
+        col_index_code = list(self.df.columns.values).index('Symbol')
         for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
             if r >= len(self.df.index):
                 break
             _index = r - (self.cPage * self.pageperMax)
-            # print(_index, r)
-            # print(self.df.iloc[r,list(self.df.columns.values).index('Symbol')])
+            # self.table.setItem(_index, 0, QTableWidgetItem(
+            #                        self.df.iloc[r,list(self.df.columns.values).index('종목명')]))
+            # self.table.setItem(_index, 1, QTableWidgetItem(
+            #                        self.df.iloc[r,list(self.df.columns.values).index('종목코드')]))
+            # print(self.df.iloc[r,col_index_name])
             self.table.setItem(_index, 0, QTableWidgetItem(
-                                   self.df.iloc[r,list(self.df.columns.values).index('Name')]))
+                                   self.df.iloc[r,col_index_name]))
             self.table.setItem(_index, 1, QTableWidgetItem(
-                                   self.df.iloc[r,list(self.df.columns.values).index('Symbol')]))
+                                   self.df.iloc[r,col_index_code]))
+
+
+    ##----------------------------------------------------------------------------------------------
+    # UI EVENT DELEGATE
+    ##----------------------------------------------------------------------------------------------
 
     def btn_tab_kospi(self):
         self.cPage = 0
         self.createKospiTable()
-        self.makeKospiTable()
-        pass
+        self.addTableListItems()
+
     def btn_tab_nyse(self):
         self.cPage = 0
         self.createNyseTable()
-        self.makeNyseTable()
-        pass
+        # self.makeNyseTable()
+        self.addTableListItems()
+
     def btn_tab_nasdaq(self):
         self.cPage = 0
         self.createNasdaqTable()
-        self.makeNasdaqTable()
+        # self.makeNasdaqTable()
+        self.addTableListItems()
 
     def btn_page_pre(self):
         self.table.scrollToTop()
@@ -175,13 +206,14 @@ class TableWidget(QWidget):
             self.cPage -= 1
         print('page :' , self.cPage)
         self.table.clearContents()
+        self.addTableListItems()
 
-        if self.rbtn_kospi.isChecked():
-            self.makeKospiTable()
-        elif self.rbtn_nyse.isChecked():
-            self.makeNyseTable()
-        elif self.rbtn_nasdaq.isChecked():
-            self.makeNasdaqTable()
+        # if self.rbtn_kospi.isChecked():
+        #     self.makeKospiTable()
+        # elif self.rbtn_nyse.isChecked():
+        #     self.makeNyseTable()
+        # elif self.rbtn_nasdaq.isChecked():
+        #     self.makeNasdaqTable()
 
     def btn_page_next(self):
         # self.table.scrollToBottom()
@@ -190,30 +222,27 @@ class TableWidget(QWidget):
             self.cPage += 1
         print('page :', self.cPage)
         self.table.clearContents()
-
-        if self.rbtn_kospi.isChecked():
-            self.makeKospiTable()
-        elif self.rbtn_nyse.isChecked():
-            self.makeNyseTable()
-        elif self.rbtn_nasdaq.isChecked():
-            self.makeNasdaqTable()
-
+        self.addTableListItems()
+        # if self.rbtn_kospi.isChecked():
+        #     self.makeKospiTable()
+        # elif self.rbtn_nyse.isChecked():
+        #     self.makeNyseTable()
+        # elif self.rbtn_nasdaq.isChecked():
+        #     self.makeNasdaqTable()
 
     def updateUiCellClick(self, r, i):
         index = r + (self.cPage * self.pageperMax)
-        print(r, index)
-        if self.rbtn_kospi.isChecked():
-            code = self.df.iloc[index, list(self.df.columns.values).index('종목코드')]
-            # code = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', '', code)
-            # code = code[1:]
-            self.parent.recivedKospiCodeSet(code, self.editTab)
-        elif self.rbtn_nyse.isChecked():
-            code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
-            self.parent.recivedNyseSet(code, self.editTab)
-        elif self.rbtn_nasdaq.isChecked():
-            code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
-            self.parent.recivedNasdatSet(code, self.editTab)
+        code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
 
+        cat = "kospi"
+        if self.rbtn_kospi.isChecked() == True :
+            cat = "kospi"
+        elif self.rbtn_nyse.isChecked() == True :
+            cat = "nyse"
+        elif self.rbtn_nasdaq.isChecked() == True :
+            cat = "nasdaq"
+
+        self.parent.setLineEditValue(code, self.editTab, cat)
 
 if __name__ == "__main__":
     app = QApplication([])
