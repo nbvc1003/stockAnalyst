@@ -3,7 +3,7 @@ from pandas_datareader import data
 from pandas_datareader._utils import RemoteDataError
 import numpy as np
 from numpy import polyval
-from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QMessageBox, QAction
+from PyQt5.QtWidgets import QApplication, QMainWindow, QSizePolicy, QMessageBox, QAction, QFileDialog
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -23,13 +23,14 @@ LINE_EDIT_2 = 1
 
 from UI.testMainUI import Ui_StockAnlyst
 ## 메인 클래스
-class Main(QMainWindow, Ui_StockAnlyst):
-# class Main(QMainWindow):  # ui파일로 로드 하는 방식
+# class Main(QMainWindow, Ui_StockAnlyst):
+class Main(QMainWindow):  # ui파일로 로드 하는 방식
     def __init__(self):
         super().__init__()
 
-        # uic.loadUi(MainUI, self)
-        self.setupUi(self)
+        uic.loadUi(MainUI, self)
+        # self.setupUi(self)
+
         self.iniUI()
         self.setWindowTitle('금융상품분석툴')
 
@@ -64,6 +65,8 @@ class Main(QMainWindow, Ui_StockAnlyst):
         self.btn_more1.clicked.connect(self.btnMore1)
         self.btn_more2.clicked.connect(self.btnMore2)
 
+        self.btn_resultClear.clicked.connect(self.btnResultClear)
+        self.btn_save.clicked.connect(self.btnResultSave)
         # self.lbl_prierd.clicked.connect(self.btnMore2)
 
         # self.show()
@@ -74,6 +77,8 @@ class Main(QMainWindow, Ui_StockAnlyst):
 
         if cat == 'kospi':
             code = code + '.KS'
+        elif cat == 'kosdaq':
+            code = code + '.KQ'
 
         if opt == LINE_EDIT_1:
             self.lineEdit_1.setText(code)
@@ -179,6 +184,24 @@ class Main(QMainWindow, Ui_StockAnlyst):
         self.tw2.move(self.pos())
         self.tw2.show()
 
+    def btnResultSave(self):
+        temptxt = self.textEdit_info.toPlainText()
+        self.save_dialog(temptxt)
+        # with open("resultSave.txt", "w") as text_file:
+        #     text_file.write(temptxt)
+        # saveDf = pd.DataFrame()
+        # pd.to_csv()
+        pass
+
+
+
+
+    def btnResultClear(self):
+        self.textEdit_info.clear()
+
+
+
+
     def aboutMsg(self):
         QMessageBox.about(self, "about",
                           '''
@@ -190,6 +213,10 @@ e-mail: nbvc1003@gmail.com
 버전: v 0.1.alpha
         
         ''')
+
+
+
+
 
     def inputData(self, targetStockCode, compStockCode, start, end):
         print('inputData targetStockCode :', targetStockCode, compStockCode)
@@ -248,19 +275,6 @@ e-mail: nbvc1003@gmail.com
         print("2", tsd.size)
         print("2", csd.size)
 
-        # ===================================================================================
-        ## from scipy import stats 사용할경우
-        # slope, intersecept, r_value, p_value, stderr = stats.linregress(tsd, csd)
-        # ConsolePrint(slope, intersecept, r_value, p_value)
-        # MPlot(plt, tsd, csd, slope, intersecept)
-        # print(tsd, type(tsd))
-        # ry = polyval([slope, intersecept], tsd)
-        # print(targetStock_df['Close'])
-        # ========================================================================
-
-        # print('tsd',tsd)
-        # print('csd',csd)
-
         if len(tsd) < 1:
             self.textEdit_info.append(targetStockCode + ' 종목 정보를 가져오지 못했습니다.')
             return
@@ -306,6 +320,29 @@ e-mail: nbvc1003@gmail.com
                      start=start, end=end)
 
         # self.m.plot(tsd, ry, markup='r')
+
+    def save_dialog(self, text):
+        defualtFileName = './resutText.txt'
+        try:
+            save_dialog = QFileDialog()
+            save_dialog.setAcceptMode(QFileDialog.AcceptSave)
+            file_path = save_dialog.getSaveFileName(self,  'Save as... File', defualtFileName,
+                                                    filter='All Files(*.*);; Text Files(*.txt)')
+
+            if file_path[0]:
+                self.file_path = file_path
+                file_open = open(self.file_path[0], 'w')
+                self.file_name = (self.file_path[0].split('/'))[-1]
+                self.statusBar().showMessage('Saved at: {}'.format(self.file_path[0]))
+                self.setWindowTitle("{} - Notepad".format(self.file_name))
+                with file_open:
+                    file_open.write(text)
+                    # self.need_saving(False)
+
+        except FileNotFoundError as why:
+            self.error_box(why)
+            pass
+
 
 
 ## PlotCanvas
