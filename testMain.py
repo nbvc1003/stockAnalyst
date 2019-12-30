@@ -23,13 +23,13 @@ LINE_EDIT_2 = 1
 
 from UI.testMainUI import Ui_StockAnlyst
 ## 메인 클래스
-# class Main(QMainWindow, Ui_StockAnlyst):
-class Main(QMainWindow):  # ui파일로 로드 하는 방식
+class Main(QMainWindow, Ui_StockAnlyst):
+# class Main(QMainWindow):  # ui파일로 로드 하는 방식
     def __init__(self):
         super().__init__()
 
-        uic.loadUi(MainUI, self)
-        # self.setupUi(self)
+        # uic.loadUi(MainUI, self)
+        self.setupUi(self)
 
         self.iniUI()
         self.setWindowTitle('금융상품분석툴')
@@ -67,14 +67,17 @@ class Main(QMainWindow):  # ui파일로 로드 하는 방식
 
         self.btn_resultClear.clicked.connect(self.btnResultClear)
         self.btn_save.clicked.connect(self.btnResultSave)
+        # self.stockName1 = ''
+        # self.stockName2 = ''
+
         # self.lbl_prierd.clicked.connect(self.btnMore2)
 
         # self.show()
 
     # ===============================================================================
 
-    def setLineEditValue(self, code , opt, cat):
-
+    def setLineEditValue(self, code , opt, cat, name):
+        # print('name :', name)
         if cat == 'kospi':
             code = code + '.KS'
         elif cat == 'kosdaq':
@@ -82,8 +85,10 @@ class Main(QMainWindow):  # ui파일로 로드 하는 방식
 
         if opt == LINE_EDIT_1:
             self.lineEdit_1.setText(code)
+            # self.stockName1 = name
         elif opt == LINE_EDIT_2:
             self.lineEdit_2.setText(code)
+            # self.stockName2 = name
 
     # ===============================================================================
 
@@ -148,8 +153,8 @@ class Main(QMainWindow):  # ui파일로 로드 하는 방식
     # 취소버튼
     def cancel(self):
 
-        # self.dateEdit.setDate(date.today() + timedelta(days=-30))
-        # self.dateEdit_2.setDate(date.today())
+        # self.stockName1 = ''
+        # self.stockName2 = ''
 
         self.btn_start.setEnabled(True)
         self.lineEdit_1.setEnabled(True)
@@ -187,20 +192,10 @@ class Main(QMainWindow):  # ui파일로 로드 하는 방식
     def btnResultSave(self):
         temptxt = self.textEdit_info.toPlainText()
         self.save_dialog(temptxt)
-        # with open("resultSave.txt", "w") as text_file:
-        #     text_file.write(temptxt)
-        # saveDf = pd.DataFrame()
-        # pd.to_csv()
-        pass
-
-
 
 
     def btnResultClear(self):
         self.textEdit_info.clear()
-
-
-
 
     def aboutMsg(self):
         QMessageBox.about(self, "about",
@@ -310,7 +305,7 @@ e-mail: nbvc1003@gmail.com
         # print(tsd)
         # print(csd)
         corr = tsd.corr(csd)
-        # print('corr:',corr, type(corr))
+
         title = '{} / {}'.format(targetStockCode, compStockCode)
         self.textEdit_info.append("종목: " + title)
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))

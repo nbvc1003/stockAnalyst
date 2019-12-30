@@ -241,7 +241,7 @@
      </font>
     </property>
     <property name="text">
-     <string>ex) 애플: APPL   , 삼성: 005930.KS</string>
+     <string>ex) 애플: APPL, 삼성: 005930.KS</string>
     </property>
    </widget>
    <widget class="QRadioButton" name="rb_2y">
@@ -340,7 +340,7 @@
    <widget class="QToolButton" name="btn_more1">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>250</x>
       <y>168</y>
       <width>27</width>
       <height>20</height>
@@ -358,7 +358,7 @@
    <widget class="QToolButton" name="btn_more2">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>250</x>
       <y>200</y>
       <width>27</width>
       <height>18</height>
@@ -428,7 +428,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

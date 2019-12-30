@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'testMainUI.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.1
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -82,7 +82,7 @@ class Ui_StockAnlyst(object):
         self.label_4.setFont(font)
         self.label_4.setObjectName("label_4")
         self.textEdit_info = QtWidgets.QTextEdit(self.centralwidget)
-        self.textEdit_info.setGeometry(QtCore.QRect(570, 300, 301, 281))
+        self.textEdit_info.setGeometry(QtCore.QRect(570, 280, 301, 321))
         font = QtGui.QFont()
         font.setFamily("MS Gothic")
         self.textEdit_info.setFont(font)
@@ -131,13 +131,13 @@ class Ui_StockAnlyst(object):
         self.rb_3m.setFont(font)
         self.rb_3m.setObjectName("rb_3m")
         self.btn_more1 = QtWidgets.QToolButton(self.centralwidget)
-        self.btn_more1.setGeometry(QtCore.QRect(330, 168, 27, 20))
+        self.btn_more1.setGeometry(QtCore.QRect(250, 168, 27, 20))
         font = QtGui.QFont()
         font.setFamily("MS Gothic")
         self.btn_more1.setFont(font)
         self.btn_more1.setObjectName("btn_more1")
         self.btn_more2 = QtWidgets.QToolButton(self.centralwidget)
-        self.btn_more2.setGeometry(QtCore.QRect(330, 200, 27, 18))
+        self.btn_more2.setGeometry(QtCore.QRect(250, 200, 27, 18))
         font = QtGui.QFont()
         font.setFamily("MS Gothic")
         self.btn_more2.setFont(font)
@@ -150,9 +150,15 @@ class Ui_StockAnlyst(object):
         self.label_6.setFont(font)
         self.label_6.setAlignment(QtCore.Qt.AlignCenter)
         self.label_6.setObjectName("label_6")
+        self.btn_save = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_save.setGeometry(QtCore.QRect(670, 610, 93, 41))
+        self.btn_save.setObjectName("btn_save")
+        self.btn_resultClear = QtWidgets.QPushButton(self.centralwidget)
+        self.btn_resultClear.setGeometry(QtCore.QRect(770, 610, 93, 41))
+        self.btn_resultClear.setObjectName("btn_resultClear")
         StockAnlyst.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(StockAnlyst)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
         self.menubar.setObjectName("menubar")
         StockAnlyst.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(StockAnlyst)
@@ -174,7 +180,7 @@ class Ui_StockAnlyst(object):
         self.label_3.setText(_translate("StockAnlyst", "대상종목:"))
         self.label_4.setText(_translate("StockAnlyst", "비교종목:"))
         self.lbl_prierd.setText(_translate("StockAnlyst", "0 Day"))
-        self.label_5.setText(_translate("StockAnlyst", "ex) 애플: APPL   , 삼성: 005930.KS"))
+        self.label_5.setText(_translate("StockAnlyst", "ex) 애플: APPL, 삼성: 005930.KS"))
         self.rb_2y.setText(_translate("StockAnlyst", "2Y"))
         self.rb_1y.setText(_translate("StockAnlyst", "1Y"))
         self.rb_6m.setText(_translate("StockAnlyst", "6m"))
@@ -183,13 +189,5 @@ class Ui_StockAnlyst(object):
         self.btn_more1.setText(_translate("StockAnlyst", "..."))
         self.btn_more2.setText(_translate("StockAnlyst", "..."))
         self.label_6.setText(_translate("StockAnlyst", "~"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    StockAnlyst = QtWidgets.QMainWindow()
-    ui = Ui_StockAnlyst()
-    ui.setupUi(StockAnlyst)
-    StockAnlyst.show()
-    sys.exit(app.exec_())
+        self.btn_save.setText(_translate("StockAnlyst", "Save"))
+        self.btn_resultClear.setText(_translate("StockAnlyst", "Clear"))

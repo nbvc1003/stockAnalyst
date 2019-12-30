@@ -43,7 +43,7 @@ class TableWidget(QWidget):
         self.rbtn_nyse.clicked.connect(self.btn_tab_nyse)
         tab_layout.addWidget(self.rbtn_nyse)
 
-        self.rbtn_nasdaq = QRadioButton("NSDAQ")
+        self.rbtn_nasdaq = QRadioButton("NASDAQ")
         self.rbtn_nasdaq.clicked.connect(self.btn_tab_nasdaq)
         tab_layout.addWidget(self.rbtn_nasdaq)
         self.rbtn_kospi.setChecked(True)
@@ -84,13 +84,6 @@ class TableWidget(QWidget):
         dfDic = self.df.set_index('Symbol')
         dfDic = dfDic['Name'].to_dict()
 
-        # get key by value
-        print('삼성전자 ', list(dfDic.keys())[list(dfDic.values()).index('삼성전자')])
-
-        # get value by key
-        print(" value2", dfDic.get('005930'))
-        print(" value", dfDic['005930'])
-
         print('2', len(self.df.index))
         # for i in df.index:
         #     if df['업종명'][i] != 'KOSPI' and df['업종명'][i] != 'KOSDAQ':
@@ -113,13 +106,6 @@ class TableWidget(QWidget):
         ### Dictionary 형으로 변경
         dfDic = self.df.set_index('Symbol')
         dfDic = dfDic['Name'].to_dict()
-
-        # get key by value
-        print('노바텍 ', list(dfDic.keys())[list(dfDic.values()).index('노바텍')])
-
-        # get value by key
-        print(" value2", dfDic.get('285490'))
-        print(" value", dfDic['285490'])
 
         print('2', len(self.df.index))
         # for i in df.index:
@@ -213,12 +199,6 @@ class TableWidget(QWidget):
         self.table.clearContents()
         self.addTableListItems()
 
-        # if self.rbtn_kospi.isChecked():
-        #     self.makeKospiTable()
-        # elif self.rbtn_nyse.isChecked():
-        #     self.makeNyseTable()
-        # elif self.rbtn_nasdaq.isChecked():
-        #     self.makeNasdaqTable()
 
     def btn_page_next(self):
         # self.table.scrollToBottom()
@@ -228,17 +208,12 @@ class TableWidget(QWidget):
         print('page :', self.cPage)
         self.table.clearContents()
         self.addTableListItems()
-        # if self.rbtn_kospi.isChecked():
-        #     self.makeKospiTable()
-        # elif self.rbtn_nyse.isChecked():
-        #     self.makeNyseTable()
-        # elif self.rbtn_nasdaq.isChecked():
-        #     self.makeNasdaqTable()
+
 
     def updateUiCellClick(self, r, i):
         index = r + (self.cPage * self.pageperMax)
         code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
-
+        name = self.df.iloc[index, list(self.df.columns.values).index('Name')]
         cat = "kospi"
         if self.rbtn_kospi.isChecked() == True :
             cat = "kospi"
@@ -250,7 +225,7 @@ class TableWidget(QWidget):
             cat = "nasdaq"
 
         # main 에 이벤트 전달
-        self.parent.setLineEditValue(code, self.editTab, cat)
+        self.parent.setLineEditValue(code, self.editTab, cat, name)
 
 if __name__ == "__main__":
     app = QApplication([])
