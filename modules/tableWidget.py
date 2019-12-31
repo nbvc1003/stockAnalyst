@@ -1,5 +1,5 @@
 
-import sys, string
+import sys
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QPushButton, \
     QHBoxLayout, QRadioButton, QLabel, QLineEdit
@@ -34,10 +34,10 @@ class TableWidget(QWidget):
         self.layout = QVBoxLayout()
 
         search_layout = QHBoxLayout()
-        ledit = QLineEdit()
+        self.ledit = QLineEdit()
         btn_search = QPushButton('Search')
-        btn_search.clicked.connect(lambda x:self.btn_search(ledit.text()))
-        search_layout.addWidget(ledit)
+        btn_search.clicked.connect(lambda x:self.btn_search(self.ledit.text()))
+        search_layout.addWidget(self.ledit)
         search_layout.addWidget(btn_search)
 
 
@@ -198,22 +198,26 @@ class TableWidget(QWidget):
 
 
     def btn_tab_kospi(self):
+        self.ledit.setText('')
         self.cPage = 0
         self.createKospiTable()
         self.addTableListItems()
 
     def btn_tab_kosdaq(self):
+        self.ledit.setText('')
         self.cPage = 0
         self.createKosdaqTable()
         self.addTableListItems()
 
     def btn_tab_nyse(self):
+        self.ledit.setText('')
         self.cPage = 0
         self.createNyseTable()
         # self.makeNyseTable()
         self.addTableListItems()
 
     def btn_tab_nasdaq(self):
+        self.ledit.setText('')
         self.cPage = 0
         self.createNasdaqTable()
         # self.makeNasdaqTable()
@@ -239,9 +243,19 @@ class TableWidget(QWidget):
 
 
     def updateUiCellClick(self, r, i):
-        index = r + (self.cPage * self.pageperMax)
-        code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
-        name = self.df.iloc[index, list(self.df.columns.values).index('Name')]
+
+        # print(type(self.table.currentIndex()), r, i)
+        if self.table.item(r,i) == None:
+            return
+        # print(self.table.item(r,i).text())
+
+        # index = r + (self.cPage * self.pageperMax)
+        # code = self.df.iloc[index, list(self.df.columns.values).index('Symbol')]
+        # name = self.df.iloc[index, list(self.df.columns.values).index('Name')]
+
+        code = self.table.item(r, 1).text()
+        name = self.table.item(r, 0).text()
+
         cat = "kospi"
         if self.rbtn_kospi.isChecked() == True :
             cat = "kospi"
