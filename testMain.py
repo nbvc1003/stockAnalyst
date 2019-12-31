@@ -14,8 +14,7 @@ import pandas as pd
 from PyQt5 import uic
 ## local modules
 import modules.tableWidget
-
-
+import modules.dataLoader
 
 MainUI = "UI/testMainUI.ui"
 LINE_EDIT_1 = 0
@@ -50,6 +49,7 @@ class Main(QMainWindow, Ui_StockAnlyst):
 
         self.statusBar().showMessage('빅데이터 분석 2차 프로젝트 1조 2020.1.3')
         self.setUI()
+
 
     def iniUI(self):
         self.m = PlotCanvas(self)
@@ -150,6 +150,11 @@ class Main(QMainWindow, Ui_StockAnlyst):
         else:
             print('입력코드값 오류')
 
+        # test = modules.dataLoader.DataLoader()
+        #
+        # test.get_NameBySymbol(input1)
+
+
     # 취소버튼
     def cancel(self):
 
@@ -161,6 +166,10 @@ class Main(QMainWindow, Ui_StockAnlyst):
         self.lineEdit_2.setEnabled(True)
         self.lineEdit_1.setFocus()
         self.m.plotClear()
+
+        self.lbl_name1.setText('')
+        self.lbl_name2.setText('')
+
 
     def rbtn_setPeriod(self):
         if self.rb_1m.isChecked():
@@ -253,9 +262,6 @@ e-mail: nbvc1003@gmail.com
             self.textEdit_info.append('오류발생 !!!!!')
             return
 
-        # print(targetStock_df.size)
-        # print(compStock_df.size)
-
         tsd = targetStock_df['Close']
         csd = compStock_df['Close']
 
@@ -280,16 +286,10 @@ e-mail: nbvc1003@gmail.com
         # 데이터 길이가 다를경우 강제로 사이즈 조절
         if len(tsd) > len(csd):
             tsd = tsd[0:len(csd)]
-            # print(tsd.size)
-            # print(csd.size)
+
         elif len(tsd) < len(csd):
             csd = csd[0:len(tsd)]
-            # print(tsd.size)
-            # print(csd.size)
 
-        # if len(tsd) != len(csd):
-        #     self.textEdit_info.append('데이터의 길이가 다릅니다. !!!!! {} / {}'.format(len(tsd), len(csd)))
-        #     return
 
         tsd.fillna(method='bfill')
         csd.fillna(method='bfill')
@@ -302,19 +302,25 @@ e-mail: nbvc1003@gmail.com
         if csd.isnull().values.any():
             print('csd isnull')
             csd = csd.fillna(csd.mean())
-        # print(tsd)
-        # print(csd)
-        corr = tsd.corr(csd)
 
-        title = '{} / {}'.format(targetStockCode, compStockCode)
-        self.textEdit_info.append("종목: " + title)
+        corr = tsd.corr(csd)
+        targetName = modules.dataLoader.DataLoader.instance().get_NameBySymbol(targetStockCode)
+        compName = modules.dataLoader.DataLoader.instance().get_NameBySymbol(compStockCode)
+        # codes = '{} / {}'.format(targetStockCode, compStockCode)
+        self.textEdit_info.append("삼품명: {}({})".format(targetName,targetStockCode ))
+        self.textEdit_info.append("비교상품명: {}({})".format(compName,compStockCode ))
+        # self.textEdit_info.append("심볼: " + codes)
         self.textEdit_info.append('기간:{} ~ {}'.format(start, end))
         self.textEdit_info.append('상관관계 : {}'.format(corr))
         self.m.plot2(tsd, csd)
+
+        title = '{} / {}'.format(targetStockCode, compStockCode)
         self.m.plot1(list(tsd), list(csd), title=title, markup='k.', xlabel=targetStockCode, ylabel=compStockCode,
                      start=start, end=end)
 
-        # self.m.plot(tsd, ry, markup='r')
+        self.lbl_name1.setText(targetName)
+        self.lbl_name2.setText(compName)
+
 
     def save_dialog(self, text):
         defualtFileName = './resutText.txt'

@@ -2,12 +2,15 @@ import sys
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QPushButton, \
     QHBoxLayout, QRadioButton, QLabel
-
+import modules.dataLoader
 
 class TableWidget(QWidget):
 
     def __init__(self, parent=None, opt=0):
         super().__init__()
+
+        # self.dataLoader = modules.dataLoader.DataLoader()
+
         self.cPage = 0
         self.maxPage = 0
         self.pageperMax = 40
@@ -59,30 +62,19 @@ class TableWidget(QWidget):
         self.layout.addLayout(btn_layout)
         self.setLayout(self.layout)
 
-    def readCSV(self, opt):
-        if opt == 0:
-            self.df = pd.read_csv('readFiles/kospi_list.csv', names=['Name', 'Symbol', '업종', '주요제품',
-                                                                 '상장일', '결산월', '대표자명', '홈페이지', '지역'], encoding='utf-8')
-        elif opt == 1:
-            self.df = pd.read_csv('readFiles/kosdaq_list.csv', names=['Name', 'Symbol', '업종', '주요제품',
-                                                                     '상장일', '결산월', '대표자명', '홈페이지', '지역'], encoding='utf-8')
-        elif opt == 2:
-            self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
-        elif opt == 3:
-            self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
-
 
     def createKospiTable(self):
-        # self.df = pd.read_csv('readFiles/kospi_kosdaq_code.csv', encoding='euc-kr')
-        self.df = pd.read_csv('readFiles/kospi_list.csv',names=['Name','Symbol','업종','주요제품',
-                                                                   '상장일','결산월','대표자명','홈페이지','지역'], encoding='utf-8')
+
+        # self.df = pd.read_csv('readFiles/kospi_list.csv',names=['Name','Symbol','업종','주요제품',
+        #                                                             '상장일','결산월','대표자명','홈페이지','지역'], encoding='utf-8')
+        self.df = modules.dataLoader.DataLoader.instance().get_DF(modules.dataLoader.KOSPI)
 
         self.df['Symbol'] = self.df['Symbol'].dropna(axis=0)
         self.df['Name'] = self.df['Name'].dropna(axis=0)
 
         ### Dictionary 형으로 변경
-        dfDic = self.df.set_index('Symbol')
-        dfDic = dfDic['Name'].to_dict()
+        # dfDic = self.df.set_index('Symbol')
+        # dfDic = dfDic['Name'].to_dict()
 
         print('2', len(self.df.index))
         # for i in df.index:
@@ -96,16 +88,17 @@ class TableWidget(QWidget):
 
 
     def createKosdaqTable(self):
-        # self.df = pd.read_csv('readFiles/kospi_kosdaq_code.csv', encoding='euc-kr')
-        self.df = pd.read_csv('readFiles/kosdaq_list.csv',names=['Name','Symbol','업종','주요제품',
-                                                                   '상장일','결산월','대표자명','홈페이지','지역'], encoding='utf-8')
+
+        # self.df = pd.read_csv('readFiles/kosdaq_list.csv',names=['Name','Symbol','업종','주요제품',
+        #                                                            '상장일','결산월','대표자명','홈페이지','지역'], encoding='utf-8')
+        self.df = modules.dataLoader.DataLoader.instance().get_DF(modules.dataLoader.KODAQ)
 
         self.df['Symbol'] = self.df['Symbol'].dropna(axis=0)
         self.df['Name'] = self.df['Name'].dropna(axis=0)
 
         ### Dictionary 형으로 변경
-        dfDic = self.df.set_index('Symbol')
-        dfDic = dfDic['Name'].to_dict()
+        # dfDic = self.df.set_index('Symbol')
+        # dfDic = dfDic['Name'].to_dict()
 
         print('2', len(self.df.index))
         # for i in df.index:
@@ -118,7 +111,8 @@ class TableWidget(QWidget):
         self.table.clearContents()
 
     def createNyseTable(self):
-        self.df = pd.read_csv('readFiles/nyse_symbol.csv', encoding='utf-8')
+        # self.df = pd.read_csv('readFiles/nyse_symbol.csv', encoding='utf-8')
+        self.df = modules.dataLoader.DataLoader.instance().get_DF(modules.dataLoader.NYSE)
 
         for i in self.df.index:
             temp = self.df.at[i, 'Symbol']
@@ -135,7 +129,8 @@ class TableWidget(QWidget):
         self.table.clearContents()
 
     def createNasdaqTable(self):
-        self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
+        # self.df = pd.read_csv('readFiles/nsdaq_symbol.csv', encoding='utf-8')
+        self.df = modules.dataLoader.DataLoader.instance().get_DF(modules.dataLoader.NASDAQ)
         for i in self.df.index:
             temp = self.df.at[i, 'Symbol']
             if '^'in temp or '.' in temp:

@@ -2,10 +2,9 @@
 
 # Form implementation generated from reading ui file 'testMainUI.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -156,6 +155,12 @@ class Ui_StockAnlyst(object):
         self.btn_resultClear = QtWidgets.QPushButton(self.centralwidget)
         self.btn_resultClear.setGeometry(QtCore.QRect(770, 610, 93, 41))
         self.btn_resultClear.setObjectName("btn_resultClear")
+        self.lbl_name1 = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_name1.setGeometry(QtCore.QRect(310, 170, 151, 20))
+        self.lbl_name1.setObjectName("lbl_name1")
+        self.lbl_name2 = QtWidgets.QLabel(self.centralwidget)
+        self.lbl_name2.setGeometry(QtCore.QRect(310, 200, 151, 20))
+        self.lbl_name2.setObjectName("lbl_name2")
         StockAnlyst.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(StockAnlyst)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 21))
@@ -191,3 +196,7 @@ class Ui_StockAnlyst(object):
         self.label_6.setText(_translate("StockAnlyst", "~"))
         self.btn_save.setText(_translate("StockAnlyst", "Save"))
         self.btn_resultClear.setText(_translate("StockAnlyst", "Clear"))
+        self.lbl_name1.setText(_translate("StockAnlyst", ".."))
+        self.lbl_name2.setText(_translate("StockAnlyst", ".."))
+
+
