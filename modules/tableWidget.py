@@ -1,7 +1,8 @@
-import sys
+
+import sys, string
 import pandas as pd
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTableWidget, QTableWidgetItem, QApplication, QPushButton, \
-    QHBoxLayout, QRadioButton, QLabel
+    QHBoxLayout, QRadioButton, QLabel, QLineEdit
 import modules.dataLoader
 
 class TableWidget(QWidget):
@@ -32,8 +33,15 @@ class TableWidget(QWidget):
 
         self.layout = QVBoxLayout()
 
-        tab_layout = QHBoxLayout()
+        search_layout = QHBoxLayout()
+        ledit = QLineEdit()
+        btn_search = QPushButton('Search')
+        btn_search.clicked.connect(lambda x:self.btn_search(ledit.text()))
+        search_layout.addWidget(ledit)
+        search_layout.addWidget(btn_search)
 
+
+        tab_layout = QHBoxLayout()
         self.rbtn_kospi = QRadioButton("KOSPI")
         self.rbtn_kospi.clicked.connect(self.btn_tab_kospi)
         tab_layout.addWidget(self.rbtn_kospi)
@@ -58,6 +66,7 @@ class TableWidget(QWidget):
             btn_layout .addWidget(button)
             button.clicked.connect(slot)
 
+        self.layout.addLayout(search_layout)
         self.layout.addLayout(tab_layout)
         self.layout.addLayout(btn_layout)
         self.setLayout(self.layout)
@@ -157,11 +166,35 @@ class TableWidget(QWidget):
                                    self.df.iloc[r,col_index_name]))
             self.table.setItem(_index, 1, QTableWidgetItem(
                                    self.df.iloc[r,col_index_code]))
+    def addSearchListItems(self, keyword):
+        self.table.clearContents()
+        # self.kospi_df[self.kospi_df['Name'].str.contains(name)]['Symbol']
+        # keyword = keyword.upper()
+        sdf = self.df[self.df['Name'].str.contains(keyword)]
+
+        self.cPage = 0
+        self.maxPage = len(sdf.index) // self.pageperMax
+
+        col_index_name = list(sdf.columns.values).index('Name')
+        col_index_code = list(sdf.columns.values).index('Symbol')
+        for r in range((self.cPage * self.pageperMax), (self.cPage * self.pageperMax)+ self.pageperMax):
+            if r >= len(sdf.index):
+                break
+            _index = r - (self.cPage * self.pageperMax)
+            self.table.setItem(_index, 0, QTableWidgetItem(
+                                   sdf.iloc[r,col_index_name]))
+            self.table.setItem(_index, 1, QTableWidgetItem(
+                                   sdf.iloc[r,col_index_code]))
 
 
     ##----------------------------------------------------------------------------------------------
     # UI EVENT DELEGATE
     ##----------------------------------------------------------------------------------------------
+
+    def btn_search(self, keyword):
+
+        if keyword != None and len(keyword) > 0:
+            self.addSearchListItems(keyword)
 
 
     def btn_tab_kospi(self):

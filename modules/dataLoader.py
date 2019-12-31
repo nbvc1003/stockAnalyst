@@ -58,7 +58,19 @@ class DataLoader(object):
             return self.nasdaq_df
 
     def get_SymbolByName(self, name):
-        pass
+        result = self.kospi_df[self.kospi_df['Name'].str.contains(name)]['Symbol']
+        # print("result ", type(result), len(result), result)
+        if len(result) < 1:
+            result = self.kosdaq_df[self.kosdaq_df['Name'].str.contains(name)]['Symbol']
+
+        if len(result) < 1:
+            result = self.nyse_df[self.nyse_df['Name'].str.contains(name)]['Symbol']
+
+        if len(result) < 1:
+            result = self.nasdaq_df[self.nasdaq_df['Name'].str.contains(name)]['Symbol']
+
+        return result.to_string(index=False).strip()
+
 
 
     def get_NameBySymbol(self, symbol):
@@ -69,16 +81,16 @@ class DataLoader(object):
         symbol = symbol.replace('.KS','')
         symbol = symbol.replace('.KQ','')
 
-        result = self.kospi_df[self.kospi_df['Symbol'].str.contains(symbol)]['Name']
+        result = self.kospi_df[self.kospi_df['Symbol'] == symbol]['Name']
         # print("result ", type(result), len(result), result)
         if len(result) < 1:
-            result = self.kosdaq_df[self.kosdaq_df['Symbol'].str.contains(symbol)]['Name']
+            result = self.kosdaq_df[self.kosdaq_df['Symbol'] == symbol]['Name']
 
         if len(result) < 1:
-            result = self.nyse_df[self.nyse_df['Symbol'].str.contains(symbol)]['Name']
+            result = self.nyse_df[self.nyse_df['Symbol']== symbol]['Name']
 
         if len(result) < 1:
-            result = self.nasdaq_df[self.nasdaq_df['Symbol'].str.contains(symbol)]['Name']
+            result = self.nasdaq_df[self.nasdaq_df['Symbol']== symbol]['Name']
 
         return result.to_string(index=False).strip()
 
