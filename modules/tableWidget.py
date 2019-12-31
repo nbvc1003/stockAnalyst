@@ -38,9 +38,9 @@ class TableWidget(QWidget):
         self.rbtn_kospi.clicked.connect(self.btn_tab_kospi)
         tab_layout.addWidget(self.rbtn_kospi)
 
-        self.rbtn_kosdaq = QRadioButton("KOSDAQ")
-        self.rbtn_kosdaq.clicked.connect(self.btn_tab_kosdaq)
-        tab_layout.addWidget(self.rbtn_kosdaq)
+        # self.rbtn_kosdaq = QRadioButton("KOSDAQ")
+        # self.rbtn_kosdaq.clicked.connect(self.btn_tab_kosdaq)
+        # tab_layout.addWidget(self.rbtn_kosdaq)
 
         self.rbtn_nyse = QRadioButton("NYSE")
         self.rbtn_nyse.clicked.connect(self.btn_tab_nyse)
@@ -212,8 +212,8 @@ class TableWidget(QWidget):
         cat = "kospi"
         if self.rbtn_kospi.isChecked() == True :
             cat = "kospi"
-        elif self.rbtn_kosdaq.isChecked() == True :
-            cat = "kosdaq"
+        # elif self.rbtn_kosdaq.isChecked() == True :
+        #     cat = "kosdaq"
         elif self.rbtn_nyse.isChecked() == True :
             cat = "nyse"
         elif self.rbtn_nasdaq.isChecked() == True :

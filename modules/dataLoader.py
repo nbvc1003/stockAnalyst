@@ -49,7 +49,7 @@ class DataLoader(object):
 
     def get_DF(self, arg):
         if arg == KOSPI:
-            return self.kospi_df
+            return self.kospi_df.sort_values(by=['Name'], axis=0)
         elif arg == KODAQ:
             return self.kosdaq_df
         elif arg == NYSE:
