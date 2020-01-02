@@ -168,10 +168,7 @@ class TableWidget(QWidget):
                                    self.df.iloc[r,col_index_code]))
     def addSearchListItems(self, keyword):
         self.table.clearContents()
-        # self.kospi_df[self.kospi_df['Name'].str.contains(name)]['Symbol']
-        # keyword = keyword.upper()
         sdf = self.df[self.df['Name'].str.contains(keyword)]
-
         self.cPage = 0
         self.maxPage = len(sdf.index) // self.pageperMax
 

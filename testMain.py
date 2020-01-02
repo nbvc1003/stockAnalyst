@@ -14,7 +14,7 @@ import pandas as pd
 from PyQt5 import uic
 ## local modules
 import modules.tableWidget
-import modules.dataLoader
+import modules.dataLoader as md
 
 MainUI = "UI/testMainUI.ui"
 LINE_EDIT_1 = 0
